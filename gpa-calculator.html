@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GPA Calculator</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#081225;
+    color:white;
+    min-height:100vh;
+    padding:40px;
+}
+
+.container{
+    max-width:1450px;
+    margin:auto;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.title h1{
+    font-size:58px;
+    color:#4f66ff;
+    margin-bottom:10px;
+}
+
+.title p{
+    color:#aab4d6;
+    font-size:20px;
+}
+
+.main{
+    display:flex;
+    gap:30px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:#1b2435;
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 0 25px rgba(0,0,0,0.35);
+}
+
+.calculator{
+    flex:1;
+    min-width:900px;
+}
+
+.result{
+    width:420px;
+}
+
+.result h2{
+    font-size:48px;
+    color:#4f66ff;
+    margin-top:20px;
+}
+
+.result p{
+    color:#b8c2e0;
+    margin-top:10px;
+    line-height:1.7;
+}
+
+.predict-container{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:25px;
+    background:#101827;
+    padding:16px 18px;
+    border-radius:16px;
+}
+
+.predict-container input{
+    width:18px;
+    height:18px;
+    accent-color:#4f66ff;
+}
+
+.predict-container label{
+    color:#dbe4ff;
+    cursor:pointer;
+}
+
+.predict-grid{
+    display:none;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.predict-grid input{
+    width:100%;
+}
+
+.table-header,
+.row{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.table-header{
+    margin-bottom:20px;
+    font-weight:600;
+    color:#dfe6ff;
+}
+
+.table-header span{
+    font-size:14px;
+    color:#94a0c6;
+    font-weight:400;
+}
+
+input,
+select{
+    width:100%;
+    background:#2d374d;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    padding:14px;
+    color:white;
+    font-size:16px;
+}
+
+input::placeholder{
+    color:#aab4d6;
+}
+
+.add-row{
+    display:inline-block;
+    margin-top:8px;
+    color:#6f86ff;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.button-group{
+    display:flex;
+    gap:15px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    padding:14px 28px;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:600;
+    transition:0.2s;
+}
+
+.calculate-btn{
+    background:#4f66ff;
+    color:white;
+}
+
+.calculate-btn:hover{
+    background:#6278ff;
+    transform:translateY(-2px);
+}
+
+.clear-btn{
+    background:#2d374d;
+    color:white;
+}
+
+.clear-btn:hover{
+    background:#3b4760;
+}
+
+.grade-box{
+    margin-top:25px;
+    background:#101827;
+    border-radius:20px;
+    padding:22px;
+}
+
+.grade-box h3{
+    color:#9db0ff;
+    margin-bottom:15px;
+}
+
+.combo{
+    background:#182235;
+    padding:14px;
+    border-radius:14px;
+    margin-bottom:14px;
+    line-height:1.8;
+    color:#dbe4ff;
+}
+
+.error{
+    margin-top:15px;
+    color:#ff7d7d;
+    font-size:14px;
+}
+
+@media(max-width:1200px){
+
+    .calculator{
+        min-width:100%;
+    }
+
+    .result{
+        width:100%;
+    }
+}
+
+@media(max-width:768px){
+
+    body{
+        padding:20px;
+    }
+
+    .table-header,
+    .row,
+    .predict-grid{
+        grid-template-columns:1fr;
+    }
+
+    .title h1{
+        font-size:42px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="title">
+
+        <h1>GPA Calculator</h1>
+
+        <p>
+            Calculate your GPA or predict future CGPA requirements
+        </p>
+
+    </div>
+
+    <div class="main">
+
+        <div class="calculator card">
+
+            <div class="predict-container">
+
+                <input
+                    type="checkbox"
+                    id="predictMode"
+                >
+
+                <label for="predictMode">
+                    Predict future CGPA requirements
+                </label>
+
+            </div>
+
+            <div
+                class="predict-grid"
+                id="predictGrid"
+            >
+
+                <div>
+
+                    <label>
+                        Current CGPA
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="currentCGPA"
+                        placeholder="8.2"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Credits Completed
+                    </label>
+
+                    <input
+                        type="number"
+                        id="completedCredits"
+                        placeholder="80"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Target CGPA
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="targetCGPA"
+                        placeholder="8.5"
+                    >
+
+                </div>
+
+            </div>
+
+            <div
+                class="table-header"
+                id="tableHeader"
+            >
+
+                <div>
+                    Course
+                    <span>(Optional)</span>
+                </div>
+
+                <div>
+                    Credits
+                </div>
+
+                <div id="gradeHeader">
+                    Grade
+                </div>
+
+            </div>
+
+            <div id="rows-container">
+
+                <div class="row">
+
+                    <input
+                        type="text"
+                        placeholder="Math"
+                    >
+
+                    <input
+                        type="number"
+                        class="credits"
+                        placeholder="4"
+                    >
+
+                    <select class="grade">
+
+                        <option value="10">
+                            O
+                        </option>
+
+                        <option value="9">
+                            A+
+                        </option>
+
+                        <option value="8">
+                            A
+                        </option>
+
+                        <option value="7">
+                            B+
+                        </option>
+
+                        <option value="6">
+                            B
+                        </option>
+
+                        <option value="5">
+                            P
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="row">
+
+                    <input
+                        type="text"
+                        placeholder="Physics"
+                    >
+
+                    <input
+                        type="number"
+                        class="credits"
+                        placeholder="3"
+                    >
+
+                    <select class="grade">
+
+                        <option value="10">
+                            O
+                        </option>
+
+                        <option value="9">
+                            A+
+                        </option>
+
+                        <option value="8" selected>
+                            A
+                        </option>
+
+                        <option value="7">
+                            B+
+                        </option>
+
+                        <option value="6">
+                            B
+                        </option>
+
+                        <option value="5">
+                            P
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <span
+                class="add-row"
+                onclick="addRow()"
+            >
+                + Add More Courses
+            </span>
+
+            <div
+                class="error"
+                id="errorText"
+            ></div>
+
+            <div class="button-group">
+
+                <button
+                    class="calculate-btn"
+                    onclick="calculateGPA()"
+                >
+                    Calculate
+                </button>
+
+                <button
+                    class="clear-btn"
+                    onclick="clearAll()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="result card">
+
+            <svg
+                width="80"
+                height="80"
+                fill="#5f8fff"
+                viewBox="0 0 24 24"
+            >
+                <path d="M19 3H14.82C14.4 1.84 13.3 1 12 1C10.7 1 9.6 1.84 9.18 3H5C3.9 3 3 3.9 3 5V21C3 22.1 3.9 23 5 23H19C20.1 23 21 22.1 21 21V5C21 3.9 20.1 3 19 3ZM12 3C12.55 3 13 3.45 13 4C13 4.55 12.55 5 12 5C11.45 5 11 4.55 11 4C11 3.45 11.45 3 12 3ZM19 21H5V5H7V8H17V5H19V21Z"/>
+            </svg>
+
+            <h2 id="finalGPA">
+                0.00
+            </h2>
+
+            <p id="gpaText">
+                Your GPA details will appear here
+            </p>
+
+            <div class="grade-box">
+
+                <h3 id="resultTitle">
+                    GPA Information
+                </h3>
+
+                <div id="predictionResult">
+                    --
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document
+    .getElementById("predictMode")
+    .addEventListener("change", togglePredictMode);
+
+function togglePredictMode()
+{
+    const predict =
+        document.getElementById("predictMode").checked;
+
+    const predictGrid =
+        document.getElementById("predictGrid");
+
+    const gradeHeader =
+        document.getElementById("gradeHeader");
+
+    const rows =
+        document.querySelectorAll(".row");
+
+    if(predict)
+    {
+        predictGrid.style.display = "grid";
+
+        gradeHeader.style.display = "none";
+
+        document
+            .getElementById("tableHeader")
+            .style.gridTemplateColumns =
+            "2fr 1fr";
+
+        rows.forEach(row =>
+        {
+            row.style.gridTemplateColumns =
+                "2fr 1fr";
+
+            row.querySelector(".grade")
+                .style.display = "none";
+        });
+    }
+
+    else
+    {
+        predictGrid.style.display = "none";
+
+        gradeHeader.style.display = "block";
+
+        document
+            .getElementById("tableHeader")
+            .style.gridTemplateColumns =
+            "2fr 1fr 1fr";
+
+        rows.forEach(row =>
+        {
+            row.style.gridTemplateColumns =
+                "2fr 1fr 1fr";
+
+            row.querySelector(".grade")
+                .style.display = "block";
+        });
+    }
+}
+
+function addRow()
+{
+    const container =
+        document.getElementById("rows-container");
+
+    const predict =
+        document.getElementById("predictMode").checked;
+
+    const row =
+        document.createElement("div");
+
+    row.className = "row";
+
+    if(predict)
+    {
+        row.style.gridTemplateColumns =
+            "2fr 1fr";
+
+        row.innerHTML = `
+            <input
+                type="text"
+                placeholder="Course"
+            >
+
+            <input
+                type="number"
+                class="credits"
+                placeholder="3"
+            >
+        `;
+    }
+
+    else
+    {
+        row.style.gridTemplateColumns =
+            "2fr 1fr 1fr";
+
+        row.innerHTML = `
+            <input
+                type="text"
+                placeholder="Course"
+            >
+
+            <input
+                type="number"
+                class="credits"
+                placeholder="3"
+            >
+
+            <select class="grade">
+
+                <option value="10">
+                    O
+                </option>
+
+                <option value="9">
+                    A+
+                </option>
+
+                <option value="8">
+                    A
+                </option>
+
+                <option value="7">
+                    B+
+                </option>
+
+                <option value="6">
+                    B
+                </option>
+
+                <option value="5">
+                    P
+                </option>
+
+            </select>
+        `;
+    }
+
+    container.appendChild(row);
+}
+
+function calculateGPA()
+{
+    const predict =
+        document.getElementById("predictMode").checked;
+
+    const errorText =
+        document.getElementById("errorText");
+
+    errorText.innerHTML = "";
+
+    if(!predict)
+    {
+        const credits =
+            document.querySelectorAll(".credits");
+
+        const grades =
+            document.querySelectorAll(".grade");
+
+        let totalCredits = 0;
+        let weightedPoints = 0;
+
+        for(let i = 0; i < credits.length; i++)
+        {
+            const credit =
+                parseFloat(credits[i].value) || 0;
+
+            const grade =
+                parseFloat(grades[i].value);
+
+            totalCredits += credit;
+
+            weightedPoints +=
+                credit * grade;
+        }
+
+        if(totalCredits === 0)
+        {
+            errorText.innerHTML =
+                "Please enter course credits";
+
+            return;
+        }
+
+        const gpa =
+            weightedPoints / totalCredits;
+
+        document.getElementById(
+            "finalGPA"
+        ).innerHTML =
+            gpa.toFixed(2);
+
+        document.getElementById(
+            "gpaText"
+        ).innerHTML =
+            "Calculated GPA based on entered courses";
+
+        document.getElementById(
+            "predictionResult"
+        ).innerHTML =
+            "Final GPA: <b>" +
+            gpa.toFixed(2) +
+            "</b>";
+    }
+
+    else
+    {
+        const currentCGPA =
+            parseFloat(
+                document.getElementById(
+                    "currentCGPA"
+                ).value
+            );
+
+        const completedCredits =
+            parseFloat(
+                document.getElementById(
+                    "completedCredits"
+                ).value
+            );
+
+        const targetCGPA =
+            parseFloat(
+                document.getElementById(
+                    "targetCGPA"
+                ).value
+            );
+
+        if(
+            isNaN(currentCGPA) ||
+            isNaN(completedCredits) ||
+            isNaN(targetCGPA)
+        )
+        {
+            errorText.innerHTML =
+                "Please fill all prediction details";
+
+            return;
+        }
+
+        const credits =
+            document.querySelectorAll(".credits");
+
+        let futureCredits = 0;
+
+        for(let i = 0; i < credits.length; i++)
+        {
+            futureCredits +=
+                parseFloat(credits[i].value) || 0;
+        }
+
+        if(futureCredits === 0)
+        {
+            errorText.innerHTML =
+                "Please enter future course credits";
+
+            return;
+        }
+
+        const requiredGPA =
+            (
+                (
+                    targetCGPA *
+                    (completedCredits + futureCredits)
+                )
+                -
+                (currentCGPA * completedCredits)
+            )
+            / futureCredits;
+
+        document.getElementById(
+            "finalGPA"
+        ).innerHTML =
+            requiredGPA.toFixed(2);
+
+        document.getElementById(
+            "gpaText"
+        ).innerHTML =
+            "Required future GPA";
+
+        if(requiredGPA > 10)
+        {
+            document.getElementById(
+                "predictionResult"
+            ).innerHTML =
+                "Target CGPA is not achievable";
+
+            return;
+        }
+
+        const options = [
+            ["O","O","A+","A+"],
+            ["O","A+","O","A"],
+            ["A+","O","O","A+"],
+            ["O","O","O","A"],
+            ["A+","A+","O","O"]
+        ];
+
+        let resultHTML =
+            `
+            <div class="combo">
+                Minimum required GPA:
+                <b>${requiredGPA.toFixed(2)}</b>
+            </div>
+            `;
+
+        options.forEach((option,index)=>
+        {
+            resultHTML +=
+            `
+            <div class="combo">
+                <b>Option ${index + 1}</b><br><br>
+
+                Suggested Grades:
+                ${option.join(" • ")}
+            </div>
+            `;
+        });
+
+        document.getElementById(
+            "predictionResult"
+        ).innerHTML =
+            resultHTML;
+    }
+}
+
+function clearAll()
+{
+    document
+        .querySelectorAll("input")
+        .forEach(input =>
+    {
+        if(input.type !== "checkbox")
+            input.value = "";
+    });
+
+    document
+        .querySelectorAll(".grade")
+        .forEach(select =>
+    {
+        select.selectedIndex = 0;
+    });
+
+    document.getElementById(
+        "predictMode"
+    ).checked = false;
+
+    togglePredictMode();
+
+    document.getElementById(
+        "finalGPA"
+    ).innerHTML = "0.00";
+
+    document.getElementById(
+        "gpaText"
+    ).innerHTML =
+        "Your GPA details will appear here";
+
+    document.getElementById(
+        "predictionResult"
+    ).innerHTML = "--";
+
+    document.getElementById(
+        "errorText"
+    ).innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
