@@ -187,7 +187,27 @@ input::placeholder{
     width:18px;
     height:18px;
 }
+#toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#1b2435;
+    color:#dbe4ff;
+    padding:14px 18px;
+    border-radius:14px;
+    font-size:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.35);
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(20px);
+    transition:0.25s;
+    z-index:9999;
+}
 
+#toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
 .empty{
     text-align:center;
     color:#aab4d6;
@@ -485,6 +505,16 @@ function renderProfessors(data)
 function copyEmail(email)
 {
     navigator.clipboard.writeText(email);
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.classList.add("show");
+
+    setTimeout(() =>
+    {
+        toast.classList.remove("show");
+    }, 1800);
 }
 
 function filterProfessors()
@@ -539,6 +569,8 @@ document
 loadProfessors();
 
 </script>
-
+<div id="toast">
+    E-Mail Copied!
+</div>
 </body>
 </html>
