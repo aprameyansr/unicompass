@@ -17,7 +17,7 @@
   },
   {
     "name": "Dr. K. Sampath Kumar",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/11/New-Project.jpg",
     "room": "XXX",
     "role": "Associate Professor",
     "department": "Commerce",
@@ -25,7 +25,7 @@
   },
   {
     "name": "Dr. B. Rajesh Kumar",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2025/07/rajesh.jpg",
     "room": "XXX",
     "role": "Professor & Head",
     "department": "Commerce",
@@ -33,7 +33,7 @@
   },
   {
     "name": "Dr. C. Vijayabanu",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2025/07/vijaya.jpg",
     "room": "XXX",
     "role": "Professor",
     "department": "Commerce",
@@ -41,15 +41,15 @@
   },
   {
     "name": "Dr. Arindam Banerjee",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/11/New-Project-2.jpg",
     "room": "XXX",
     "role": "Associate Professor",
     "department": "Commerce",
-    "email": "arindamb@snuchennai.edu.in"
+    "email": "arindambanerjee@snuchennai.edu.in"
   },
   {
     "name": "Dr. M. S. Devi",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/faculty/dr-m-s-devi/",
     "room": "XXX",
     "role": "Associate Professor",
     "department": "Commerce",
@@ -57,11 +57,11 @@
   },
   {
     "name": "Dr. Kavitha Menon",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/11/New-Project-1.jpg",
     "room": "XXX",
     "role": "Assistant Professor",
     "department": "Commerce",
-    "email": "kavitham@snuchennai.edu.in"
+    "email": "kavithamenon@snuchennai.edu.in"
   },
   {
     "name": "Dr. Anjali Tuli",
@@ -73,7 +73,7 @@
   },
   {
     "name": "Dr. Janani Ravinagarajan",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/09/DSCF0261-1.jpg",
     "room": "XXX",
     "role": "Assistant Professor",
     "department": "Commerce",
@@ -81,10 +81,10 @@
   },
   {
     "name": "Dr. Satya Prakash Mani",
-    "photo": "",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2026/01/New-Project-85.jpg",
     "room": "XXX",
     "role": "Assistant Professor",
     "department": "Commerce",
-    "email": "satyaprakashm@snuchennai.edu.in"
+    "email": "satyaprakash@snuchennai.edu.in"
   }
 ]
