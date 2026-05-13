@@ -159,24 +159,33 @@ input::placeholder{
 .email-row{
     display:flex;
     align-items:center;
+    justify-content:space-between;
     gap:12px;
-    flex-wrap:wrap;
 }
 
 .copy-btn{
-    background:#4f66ff;
-    color:white;
+    width:34px;
+    height:34px;
     border:none;
-    padding:10px 14px;
-    border-radius:12px;
+    border-radius:10px;
+    background:transparent;
+    color:#9aa7cf;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
-    font-size:14px;
-    font-weight:600;
     transition:0.2s;
+    flex-shrink:0;
 }
 
 .copy-btn:hover{
-    background:#667cff;
+    background:#2d374d;
+    color:#dbe4ff;
+}
+
+.copy-btn svg{
+    width:18px;
+    height:18px;
 }
 
 .empty{
@@ -206,7 +215,6 @@ input::placeholder{
     }
 
     .email-row{
-        flex-direction:column;
         align-items:flex-start;
     }
 }
@@ -225,7 +233,7 @@ input::placeholder{
         </h1>
 
         <p>
-            Search faculty members by name or school
+            Search faculty members by name or department
         </p>
 
     </div>
@@ -244,10 +252,10 @@ input::placeholder{
 
         <div class="search-box">
 
-            <select id="schoolFilter">
+            <select id="departmentFilter">
 
                 <option value="all">
-                    All Schools
+                    All Departments
                 </option>
 
             </select>
@@ -290,7 +298,7 @@ async function loadProfessors()
         professors =
             await response.json();
 
-        populateSchools();
+        populateDepartments();
 
         renderProfessors(professors);
     }
@@ -304,31 +312,33 @@ async function loadProfessors()
     }
 }
 
-function populateSchools()
+function populateDepartments()
 {
-    const schoolFilter =
+    const departmentFilter =
         document.getElementById(
-            "schoolFilter"
+            "departmentFilter"
         );
 
-    const schools =
+    const departments =
         [...new Set(
             professors.map(
                 professor =>
-                professor.school
+                professor.department
             )
         )];
 
-    schools.forEach(school =>
+    departments.sort();
+
+    departments.forEach(department =>
     {
         const option =
             document.createElement("option");
 
-        option.value = school;
+        option.value = department;
 
-        option.textContent = school;
+        option.textContent = department;
 
-        schoolFilter.appendChild(option);
+        departmentFilter.appendChild(option);
     });
 }
 
@@ -405,18 +415,6 @@ function renderProfessors(data)
                 <div class="info-item">
 
                     <div class="label">
-                        School
-                    </div>
-
-                    <div class="value">
-                        ${professor.school}
-                    </div>
-
-                </div>
-
-                <div class="info-item">
-
-                    <div class="label">
                         Department
                     </div>
 
@@ -441,8 +439,35 @@ function renderProfessors(data)
                         <button
                             class="copy-btn"
                             onclick="copyEmail('${professor.email}')"
+                            title="Copy Email"
                         >
-                            Copy
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+
+                                <rect
+                                    x="9"
+                                    y="9"
+                                    width="13"
+                                    height="13"
+                                    rx="2"
+                                ></rect>
+
+                                <path
+                                    d="M5 15H4
+                                    a2 2 0 0 1-2-2V4
+                                    a2 2 0 0 1 2-2h9
+                                    a2 2 0 0 1 2 2v1"
+                                ></path>
+
+                            </svg>
+
                         </button>
 
                     </div>
@@ -460,10 +485,6 @@ function renderProfessors(data)
 function copyEmail(email)
 {
     navigator.clipboard.writeText(email);
-
-    alert(
-        "Email copied to clipboard"
-    );
 }
 
 function filterProfessors()
@@ -474,9 +495,9 @@ function filterProfessors()
         .value
         .toLowerCase();
 
-    const schoolValue =
+    const departmentValue =
         document
-        .getElementById("schoolFilter")
+        .getElementById("departmentFilter")
         .value;
 
     const filtered =
@@ -487,14 +508,14 @@ function filterProfessors()
             .toLowerCase()
             .includes(searchValue);
 
-        const matchesSchool =
-            schoolValue === "all"
+        const matchesDepartment =
+            departmentValue === "all"
             ||
-            professor.school === schoolValue;
+            professor.department === departmentValue;
 
         return (
             matchesSearch &&
-            matchesSchool
+            matchesDepartment
         );
     });
 
@@ -509,7 +530,7 @@ document
     );
 
 document
-    .getElementById("schoolFilter")
+    .getElementById("departmentFilter")
     .addEventListener(
         "change",
         filterProfessors
