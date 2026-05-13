@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>EduGrade</title>
+<title>UniCompass</title>
+
 <link rel="icon" type="image/png" href="favicon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -28,7 +30,7 @@ body{
 }
 
 .container{
-    max-width:1400px;
+    max-width:1450px;
     margin:auto;
     padding:30px;
 }
@@ -53,6 +55,7 @@ body{
 .nav-links{
     display:flex;
     gap:35px;
+    flex-wrap:wrap;
 }
 
 .nav-links a{
@@ -72,7 +75,7 @@ body{
 }
 
 .hero h1{
-    font-size:72px;
+    font-size:78px;
     line-height:1.1;
     margin-bottom:25px;
 }
@@ -84,9 +87,9 @@ body{
 .hero p{
     color:#aab4d6;
     font-size:22px;
-    max-width:850px;
+    max-width:900px;
     margin:auto;
-    line-height:1.8;
+    line-height:1.9;
 }
 
 .button-group{
@@ -130,10 +133,27 @@ body{
     background:#25324a;
 }
 
+.section-title{
+    margin-top:110px;
+    margin-bottom:40px;
+    text-align:center;
+}
+
+.section-title h2{
+    font-size:52px;
+    color:white;
+    margin-bottom:12px;
+}
+
+.section-title p{
+    color:#aab4d6;
+    font-size:20px;
+}
+
 .cards{
-    margin-top:100px;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    grid-template-columns:
+    repeat(auto-fit,minmax(330px,1fr));
     gap:30px;
 }
 
@@ -150,10 +170,10 @@ body{
 }
 
 .card-icon{
-    width:70px;
-    height:70px;
+    width:72px;
+    height:72px;
     background:#101827;
-    border-radius:18px;
+    border-radius:20px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -178,11 +198,16 @@ body{
     font-size:16px;
 }
 
+.coming-soon{
+    opacity:0.75;
+}
+
 .footer{
-    margin-top:100px;
+    margin-top:120px;
     text-align:center;
     color:#7f8aa8;
-    padding-bottom:30px;
+    padding-bottom:40px;
+    line-height:1.8;
 }
 
 .glow{
@@ -219,16 +244,19 @@ body{
 
     .nav-links{
         gap:20px;
-        flex-wrap:wrap;
         justify-content:center;
     }
 
     .hero h1{
-        font-size:48px;
+        font-size:52px;
     }
 
     .hero p{
         font-size:18px;
+    }
+
+    .section-title h2{
+        font-size:40px;
     }
 }
 
@@ -245,7 +273,7 @@ body{
     <div class="navbar">
 
         <div class="logo">
-            EduGrade
+            UniCompass
         </div>
 
         <div class="nav-links">
@@ -262,6 +290,10 @@ body{
                 GPA Calculator
             </a>
 
+            <a href="professor-finder.html">
+                Professors
+            </a>
+
         </div>
 
     </div>
@@ -269,16 +301,16 @@ body{
     <div class="hero">
 
         <h1>
-            Your College
+            Navigate Your
             <span>
-                Academic Companion
+                University Life
             </span>
         </h1>
 
         <p>
-            Calculate grades, predict future GPA requirements,
-            and plan your academic performance with beautifully
-            designed calculators built specifically for your college.
+            UniCompass is your all-in-one student platform for academic tools,
+            GPA planning, faculty discovery, resources, calendars, and everything
+            you need to make university life simpler and more organized.
         </p>
 
         <div class="button-group">
@@ -300,6 +332,18 @@ body{
             </a>
 
         </div>
+
+    </div>
+
+    <div class="section-title">
+
+        <h2>
+            Academic Tools
+        </h2>
+
+        <p>
+            Built specifically for students
+        </p>
 
     </div>
 
@@ -325,12 +369,12 @@ body{
             </h2>
 
             <p>
-                Calculate weighted grades, track internal assessments,
-                and predict the marks needed to achieve your target grade.
+                Calculate weighted grades, predict target marks,
+                and estimate exactly what score you need in future exams.
             </p>
 
             <a href="grade-calculator.html">
-                Open Calculator →
+                Open Tool →
             </a>
 
         </div>
@@ -356,12 +400,136 @@ body{
 
             <p>
                 Compute GPA instantly, estimate future CGPA goals,
-                and explore possible grade combinations required.
+                and explore grade combinations required to achieve them.
             </p>
 
             <a href="gpa-calculator.html">
-                Open Calculator →
+                Open Tool →
             </a>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                <svg
+                    width="36"
+                    height="36"
+                    fill="#5f8fff"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/>
+                </svg>
+
+            </div>
+
+            <h2>
+                Professor Finder
+            </h2>
+
+            <p>
+                Search professors by name or school,
+                find office rooms, departments, and instantly copy email IDs.
+            </p>
+
+            <a href="professor-finder.html">
+                Open Tool →
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="section-title">
+
+        <h2>
+            Coming Soon
+        </h2>
+
+        <p>
+            UniCompass will continue expanding
+        </p>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card coming-soon">
+
+            <div class="card-icon">
+
+                <svg
+                    width="36"
+                    height="36"
+                    fill="#5f8fff"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3 4.89 3 6V20C3 21.11 3.89 22 5 22H19C20.11 22 21 21.11 21 20V6C21 4.89 20.11 4 19 4Z"/>
+                </svg>
+
+            </div>
+
+            <h2>
+                Academic Calendar
+            </h2>
+
+            <p>
+                Semester schedules, exam dates,
+                holidays, registration timelines, and important announcements.
+            </p>
+
+        </div>
+
+        <div class="card coming-soon">
+
+            <div class="card-icon">
+
+                <svg
+                    width="36"
+                    height="36"
+                    fill="#5f8fff"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M14 2H6C4.89 2 4 2.89 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2Z"/>
+                </svg>
+
+            </div>
+
+            <h2>
+                Student Documents
+            </h2>
+
+            <p>
+                Quick access to academic resources,
+                forms, PDFs, syllabi, and useful university documents.
+            </p>
+
+        </div>
+
+        <div class="card coming-soon">
+
+            <div class="card-icon">
+
+                <svg
+                    width="36"
+                    height="36"
+                    fill="#5f8fff"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M12 2L1 21H23L12 2Z"/>
+                </svg>
+
+            </div>
+
+            <h2>
+                More Utilities
+            </h2>
+
+            <p>
+                Attendance tracking, course planners,
+                event updates, timetable helpers, and more student tools.
+            </p>
 
         </div>
 
@@ -369,6 +537,7 @@ body{
 
     <div class="footer">
 
+        UniCompass • Your Complete Student Companion<br>
         Built for students • Designed for simplicity
 
     </div>
