@@ -109,6 +109,10 @@ input::placeholder{
     margin-bottom:14px;
 }
 
+.profile-link{
+    text-decoration:none;
+}
+
 .profile-image{
     width:72px;
     height:72px;
@@ -116,7 +120,7 @@ input::placeholder{
     min-height:72px;
     border-radius:50%;
     border:2px solid #4f66ff;
-    pointer-events:none;
+    pointer-events:auto;
     user-select:none;
 
     display:flex;
@@ -135,6 +139,12 @@ input::placeholder{
     );
 
     overflow:hidden;
+    transition:0.2s;
+}
+
+.profile-image:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 18px rgba(79,102,255,0.45);
 }
 
 .name{
@@ -336,6 +346,10 @@ input::placeholder{
 
 </div>
 
+<div id="toast">
+    E-Mail Copied!
+</div>
+
 <script>
 
 document.addEventListener(
@@ -437,15 +451,36 @@ function renderProfessors(data)
             ?.toUpperCase()
             || "NA";
 
+        const website =
+            professor.website
+            ||
+            (
+                "https://www.snuchennai.edu.in/faculty/" +
+                professor.name
+                .toLowerCase()
+                .replaceAll(".", "")
+                .replaceAll(" ", "-")
+                + "/"
+            );
+
         card.innerHTML = `
 
             <div class="top">
 
-                <div
-                    class="profile-image"
+                <a
+                    href="${website}"
+                    target="_blank"
+                    title="Go to Website"
+                    class="profile-link"
                 >
-                    ${initials}
-                </div>
+
+                    <div
+                        class="profile-image"
+                    >
+                        ${initials}
+                    </div>
+
+                </a>
 
                 <div>
 
@@ -612,10 +647,6 @@ document
 loadProfessors();
 
 </script>
-
-<div id="toast">
-    E-Mail Copied!
-</div>
 
 </body>
 </html>

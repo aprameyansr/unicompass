@@ -13,7 +13,8 @@
     "room": "XXX",
     "role": "Senior Program Convenor",
     "department": "Commerce",
-    "email": "krishnanr@snuchennai.edu.in"
+    "email": "krishnanr@snuchennai.edu.in",
+    "website": "https://www.snuchennai.edu.in/faculty/ramanathan-krishnan/"
   },
   {
     "name": "Dr. K. Sampath Kumar",
@@ -37,7 +38,8 @@
     "room": "XXX",
     "role": "Professor",
     "department": "Commerce",
-    "email": "vijayabanuc@snuchennai.edu.in"
+    "email": "vijayabanuc@snuchennai.edu.in",
+    "website": "https://www.snuchennai.edu.in/faculty/dr-vijaya-banu/"
   },
   {
     "name": "Dr. Arindam Banerjee",
@@ -85,6 +87,7 @@
     "room": "XXX",
     "role": "Assistant Professor",
     "department": "Commerce",
-    "email": "satyaprakash@snuchennai.edu.in"
+    "email": "satyaprakash@snuchennai.edu.in",
+    "website": "https://www.snuchennai.edu.in/faculty/satya-prakash-mani/"
   }
 ]
