@@ -639,34 +639,54 @@ function calculateGrade()
     const predictMode =
         document.getElementById("predictMode").checked;
 
-    let total = 0;
+    let currentContribution = 0;
 
     let completedWeight = 0;
 
+    let totalWeight = 0;
+
     for(let i = 0; i < scores.length; i++)
     {
-        const score =
-            parseFloat(scores[i].value) || 0;
+        const scoreValue =
+            scores[i].value.trim();
 
-        const outof =
-            parseFloat(outofs[i].value) || 100;
+        const outofValue =
+            outofs[i].value.trim();
+
+        const weightValue =
+            weights[i].value.trim();
 
         const weight =
-            parseFloat(weights[i].value) || 0;
+            parseFloat(weightValue) || 0;
 
-        const percentage =
-            (score / outof) * 100;
+        totalWeight += weight;
 
-        total +=
-            (percentage * weight) / 100;
+        if(
+            scoreValue !== "" &&
+            outofValue !== "" &&
+            weightValue !== ""
+        )
+        {
+            const score =
+                parseFloat(scoreValue);
 
-        completedWeight += weight;
+            const outof =
+                parseFloat(outofValue);
+
+            const percentage =
+                (score / outof) * 100;
+
+            currentContribution +=
+                (percentage * weight) / 100;
+
+            completedWeight += weight;
+        }
     }
 
     const errorDiv =
         document.getElementById("weightError");
 
-    if(!predictMode && completedWeight !== 100)
+    if(!predictMode && totalWeight !== 100)
     {
         errorDiv.innerHTML =
             "Total weightage must add up to 100%";
@@ -685,19 +705,26 @@ function calculateGrade()
 
     errorDiv.innerHTML = "";
 
-    const finalPercentage =
-        total.toFixed(2);
+    const currentGrade =
+        completedWeight > 0
+        ?
+        (
+            currentContribution /
+            completedWeight
+        ) * 100
+        :
+        0;
 
     document.getElementById(
         "finalPercentage"
     ).innerHTML =
-        finalPercentage + "%";
+        currentGrade.toFixed(2) + "%";
 
     document.getElementById(
         "letterGrade"
     ).innerHTML =
         "Current Grade: <b>" +
-        getLetterGrade(finalPercentage) +
+        getLetterGrade(currentGrade) +
         "</b>";
 
     if(predictMode)
@@ -712,42 +739,53 @@ function calculateGrade()
         const remainingWeight =
             100 - completedWeight;
 
-        let needed =
-            ((target - total) / remainingWeight) * 100;
-
-        let resultText = "";
+        let requiredMarks =
+            (
+                (
+                    target -
+                    currentContribution
+                )
+                /
+                remainingWeight
+            ) * 100;
 
         document.getElementById(
             "resultTitle"
         ).innerHTML =
             "Prediction Result";
 
+        let resultText = "";
+
         if(remainingWeight <= 0)
         {
             resultText =
-                "No remaining weight left";
+                "No remaining assessments left";
         }
 
-        else if(needed <= 0)
+        else if(requiredMarks <= 0)
         {
             resultText =
                 "Target already achieved";
         }
 
-        else if(needed > 100)
+        else if(requiredMarks > 100)
         {
             resultText =
-                "Target is not achievable";
+                "Target grade is not achievable";
         }
 
         else
         {
+            requiredMarks =
+                Math.ceil(requiredMarks);
+
             resultText =
-                "You need <b>" +
-                needed.toFixed(2) +
-                "%</b> in the remaining <b>" +
-                remainingWeight +
-                "%</b>";
+                "Minimum marks required in remaining assessments:<br><br>" +
+                "<b>" +
+                requiredMarks +
+                "%</b> to achieve <b>" +
+                getLetterGrade(target) +
+                "</b>";
         }
 
         document.getElementById(
@@ -767,7 +805,7 @@ function calculateGrade()
             "requiredMarks"
         ).innerHTML =
             "Overall Grade: <b>" +
-            getLetterGrade(finalPercentage) +
+            getLetterGrade(currentGrade) +
             "</b>";
     }
 }
