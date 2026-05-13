@@ -7,5 +7,85 @@
     "school": "Engineering",
     "department": "CSE",
     "email": "nagarajant@snuchennai.edu.in"
+  },
+  {
+    "name": "CA Ramanathan Krishnan",
+    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/02/New-Project-2024-02-08T202559.695.webp",
+    "room": "XXX",
+    "role": "Senior Program Convenor",
+    "department": "Commerce",
+    "email": "krishnanr@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. K. Sampath Kumar",
+    "photo": "",
+    "room": "XXX",
+    "role": "Associate Professor",
+    "department": "Commerce",
+    "email": "sampathkumark@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. B. Rajesh Kumar",
+    "photo": "",
+    "room": "XXX",
+    "role": "Professor & Head",
+    "department": "Commerce",
+    "email": "rajeshkumarb@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. C. Vijayabanu",
+    "photo": "",
+    "room": "XXX",
+    "role": "Professor",
+    "department": "Commerce",
+    "email": "vijayabanuc@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. Arindam Banerjee",
+    "photo": "",
+    "room": "XXX",
+    "role": "Associate Professor",
+    "department": "Commerce",
+    "email": "arindamb@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. M. S. Devi",
+    "photo": "",
+    "room": "XXX",
+    "role": "Associate Professor",
+    "department": "Commerce",
+    "email": "devims@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. Kavitha Menon",
+    "photo": "",
+    "room": "XXX",
+    "role": "Assistant Professor",
+    "department": "Commerce",
+    "email": "kavitham@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. Anjali Tuli",
+    "photo": "",
+    "room": "XXX",
+    "role": "Assistant Professor",
+    "department": "Commerce",
+    "email": "anjalit@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. Janani Ravinagarajan",
+    "photo": "",
+    "room": "XXX",
+    "role": "Assistant Professor",
+    "department": "Commerce",
+    "email": "jananir@snuchennai.edu.in"
+  },
+  {
+    "name": "Dr. Satya Prakash Mani",
+    "photo": "",
+    "room": "XXX",
+    "role": "Assistant Professor",
+    "department": "Commerce",
+    "email": "satyaprakashm@snuchennai.edu.in"
   }
 ]
