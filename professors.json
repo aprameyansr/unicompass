@@ -1,242 +1,626 @@
 [
-  {
-    "name": "Dr. T. Nagarajan",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/01/Dr.-T.-Nagarajan.webp",
-    "room": "AB3 - 101",
-    "role": "Professor and Associate Dean",
-    "department": "Computer Science and Engineering",
-    "email": "nagarajant@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. S. Chandrakala",
-    "photo": "",
-    "room": "XXX",
-    "role": "Professor",
-    "department": "Computer Science and Engineering",
-    "email": "chandrakalas@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Jiji",
-    "photo": "",
-    "room": "XXX",
-    "role": "Professor",
-    "department": "Computer Science and Engineering",
-    "email": "jiji@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Sakthi Balan Muthiah",
-    "photo": "",
-    "room": "XXX",
-    "role": "Professor",
-    "department": "Computer Science and Engineering",
-    "email": "sakthibalanm@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Santhi Natarajan",
-    "photo": "",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Computer Science and Engineering",
-    "email": "santhin@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. K.B. Sundhara Kumar",
-    "photo": "",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Computer Science and Engineering",
-    "email": "sundharakumarkb@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. S. Veeramani",
-    "photo": "",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Computer Science and Engineering",
-    "email": "veeramanis@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. S. Vidhusha",
-    "photo": "",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Computer Science and Engineering",
-    "email": "vidhushas@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Amsaprabhaa M",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "amsaprabhaam@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. G. Anushiya Rachel",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "anushiyarachelg@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Avisha Das",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "avishadas@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. K.B. Badri Narayanan",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "badrinarayanankb@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Debajyoti Biswas",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "debajyotib@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Dhivya S",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "dhivyas@snuchennai.edu.in"
-  },
-  {
-    "name": "Divya S",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "divyas@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. VA Kandappan",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "kandappanva@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Nimisha Ghosh",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "nimishag@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. U. Padmavathi",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "padmavathiu@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Poulomi Chakrabarty",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "poulomic@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Priya G. L.",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Computer Science and Engineering",
-    "email": "priyagl@snuchennai.edu.in"
-  },
-  {
-    "name": "CA Ramanathan Krishnan",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/02/New-Project-2024-02-08T202559.695.webp",
-    "room": "XXX",
-    "role": "Senior Program Convenor",
-    "department": "Commerce",
-    "email": "krishnanr@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. K. Sampath Kumar",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/11/New-Project.jpg",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Commerce",
-    "email": "sampathkumark@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. B. Rajesh Kumar",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2025/07/rajesh.jpg",
-    "room": "XXX",
-    "role": "Professor & Head",
-    "department": "Commerce",
-    "email": "rajeshkumarb@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. C. Vijayabanu",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2025/07/vijaya.jpg",
-    "room": "XXX",
-    "role": "Professor",
-    "department": "Commerce",
-    "email": "vijayabanuc@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Arindam Banerjee",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/11/New-Project-2.jpg",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Commerce",
-    "email": "arindambanerjee@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. M. S. Devi",
-    "photo": "https://www.snuchennai.edu.in/faculty/dr-m-s-devi/",
-    "room": "XXX",
-    "role": "Associate Professor",
-    "department": "Commerce",
-    "email": "devims@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Kavitha Menon",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/11/New-Project-1.jpg",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Commerce",
-    "email": "kavithamenon@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Anjali Tuli",
-    "photo": "",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Commerce",
-    "email": "anjalit@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Janani Ravinagarajan",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2024/09/DSCF0261-1.jpg",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Commerce",
-    "email": "jananir@snuchennai.edu.in"
-  },
-  {
-    "name": "Dr. Satya Prakash Mani",
-    "photo": "https://www.snuchennai.edu.in/wp-content/uploads/2026/01/New-Project-85.jpg",
-    "room": "XXX",
-    "role": "Assistant Professor",
-    "department": "Commerce",
-    "email": "satyaprakash@snuchennai.edu.in"
-  }
+    {
+        "name": "Dr. T. Nagarajan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor and Associate Dean",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr.S.Chandrakala",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Jiji",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Sakthi Balan Muthiah",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Santhi Natarajan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. K.B. Sundhara Kumar",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. S. Veeramani",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. S. Vidhusha",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Amsaprabhaa M",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. G. Anushiya Rachel",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Avisha Das",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. K.B. Badri Narayanan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Debajyoti Biswas",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Dhivya S",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": "info@snuchennai.edu.in"
+    },
+    {
+        "name": "Divya S",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": "info@snuchennai.edu.in"
+    },
+    {
+        "name": "Dr. VA Kandappan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Nimisha Ghosh",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. U. Padmavathi",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Poulomi Chakrabarty",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Priya G. L.",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Rourab Paul",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Rudrashis Majumder",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Satish Kumar",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Sinha Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Shikha Marwaha",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Shoubhik Chakraborty",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Srijanee Mookherji",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Subin Sahayam Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr Surya K",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Vegesna S M Srinivasavarma",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Computer Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr. Angel Jessieleena",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Environmental Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "Dr.K.Uthradevi",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Environmental Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "CA R. Krishnan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Senior Program Convenor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr. K Sampath Kumar",
+        "photo": "",
+        "room": "XXX",
+        "role": "Senior Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr. Rajesh Kumar B",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor & Head",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr Vijayabanu C",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Commerce",
+        "email": "info@snuchennai.edu.in"
+    },
+    {
+        "name": "Dr. Arindam Banerjee Associate",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr. M S Devi Associate",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr.Kavitha Menon",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr. Anjali Tuli",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Ravinagarajan Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr. Satya Prakash Mani",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Prakash",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Rangan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Dr. Madhuri Malhotra",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "R.Natarajan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Ram Mohan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Tampi",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Srinath",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Faculty",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Vijayaraghavan Visiting",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Commerce",
+        "email": ""
+    },
+    {
+        "name": "Prof. Vimal Kumar",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor & Head,",
+        "department": "Economics, IIT Kanpur",
+        "email": ""
+    },
+    {
+        "name": "Economics, IIT Kanpur",
+        "photo": "",
+        "room": "XXX",
+        "role": "Adjunct Professor & Honorary Advisor, SNU",
+        "department": "Chennai",
+        "email": ""
+    },
+    {
+        "name": "Dr. Pushpa Trivedi",
+        "photo": "",
+        "room": "XXX",
+        "role": "Senior Professor & Head",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Ashutosh Kumar Dubey",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Chaitanya Talreja",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Indrani Sengupta",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Pleasa Serin Abraham",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Rohit M",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Stefy Carmel",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Economics",
+        "email": ""
+    },
+    {
+        "name": "Dr.Cherry Mathew",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "English",
+        "email": ""
+    },
+    {
+        "name": "Dr. Nibedita Bandyopadhyay",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "English",
+        "email": ""
+    },
+    {
+        "name": "Dr Sruti M D",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "English",
+        "email": "info@snuchennai.edu.in"
+    },
+    {
+        "name": "Dr. Tanima Bagchi",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "English",
+        "email": ""
+    },
+    {
+        "name": "Dr. R. Sujatha",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. P. Venugopal",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr.V. Vembarasan",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Arusha C Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. K. Deepa Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Joji Benny",
+        "photo": "",
+        "room": "XXX",
+        "role": "Assistant Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Joyashree Mondal Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Md Mansur Alam Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Lakshmi Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Sahaya Jenifer A Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    },
+    {
+        "name": "Dr. Prita Nair",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Physics",
+        "email": ""
+    },
+    {
+        "name": "Dr. N.P Rajesh",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Physics",
+        "email": ""
+    },
+    {
+        "name": "Dr Sudipta Som",
+        "photo": "",
+        "room": "XXX",
+        "role": "Associate Professor",
+        "department": "Physics",
+        "email": ""
+    },
+    {
+        "name": "Dr.K.Uthradevi Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Environmental Science and Engineering",
+        "email": ""
+    },
+    {
+        "name": "C Assistant",
+        "photo": "",
+        "room": "XXX",
+        "role": "Professor",
+        "department": "Mathematics",
+        "email": ""
+    }
 ]
