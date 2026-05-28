@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Calendar — UniCompass</title>
+    <meta name="description" content="View your program's academic calendar with all important dates, exams, holidays and events.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            background: #081225;
+            color: white;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container { max-width: 1450px; margin: auto; }
+
+        /* Glow Effects */
+        .glow {
+            position: fixed; width: 500px; height: 500px; background: #4f66ff;
+            opacity: 0.08; border-radius: 50%; filter: blur(120px); z-index: -1;
+        }
+        .glow1 { top: -150px; left: -100px; }
+        .glow2 { bottom: -150px; right: -100px; }
+
+        /* Navbar */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #111827; border-radius: 22px; padding: 18px 35px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.35);
+            margin-bottom: 40px; gap: 16px; flex-wrap: wrap;
+        }
+        
+        .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
+        .back-arrow {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 10px;
+            background: #1b2435; color: #aab4d6; transition: 0.2s;
+        }
+        .logo-wrap:hover .back-arrow { background: #4f66ff; color: white; }
+        .logo-text { font-size: 30px; font-weight: 700; color: #4f66ff; }
+        .logo-text span { color: #4f66ff; } /* removed blue span for consistency with index */
+
+        .program-selector { display: flex; align-items: center; gap: 12px; }
+        .program-selector label { font-size: 14px; color: #aab4d6; font-weight: 500; }
+        #programSelect {
+            background: #1b2435; border: 1.5px solid transparent;
+            color: white; padding: 10px 18px; border-radius: 12px;
+            font-size: 14px; font-family: 'Poppins', sans-serif; cursor: pointer;
+            outline: none; transition: 0.2s; min-width: 320px;
+        }
+        #programSelect:focus { border-color: #4f66ff; }
+        #programSelect option { background: #1b2435; }
+
+        /* Layout */
+        .layout { display: grid; grid-template-columns: 1fr 340px; gap: 30px; align-items: flex-start; }
+        
+        /* Main Calendar Card */
+        .cal-wrapper {
+            background: #1b2435; border-radius: 28px; padding: 35px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.35); transition: 0.25s;
+        }
+
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .month-name { font-size: 30px; font-weight: 700; color: white; }
+        .year-name { font-weight: 400; color: #aab4d6; }
+        
+        .nav-buttons { display: flex; gap: 10px; }
+        .nav-btn {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: #111827; border: none;
+            color: #aab4d6; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .nav-btn:hover { background: #4f66ff; color: white; transform: translateY(-2px); }
+
+        /* Grid Setup */
+        .days-header {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+            text-align: center; margin-bottom: 12px;
+        }
+        .day-label { font-size: 13px; font-weight: 600; color: #7f8aa8; text-transform: uppercase; letter-spacing: 1px; }
+
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+
+        /* Day Cells */
+        .day-cell {
+            min-height: 110px; background: #111827;
+            border-radius: 16px; padding: 8px; display: flex; flex-direction: column; gap: 4px;
+            transition: all 0.2s; border: 1px solid transparent;
+        }
+        .day-cell.empty { background: transparent; border-color: transparent; }
+        .day-cell.active { cursor: pointer; }
+        .day-cell.active:hover {
+            background: #182133;
+            border-color: rgba(79, 102, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .day-cell.holiday { background: rgba(249, 115, 22, 0.05); }
+
+        .day-num {
+            align-self: flex-end; font-size: 14px; font-weight: 600; color: #aab4d6;
+            width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; margin-bottom: 4px;
+        }
+        .day-cell.today .day-num {
+            background: #4f66ff; color: white;
+            box-shadow: 0 4px 12px rgba(79, 102, 255, 0.4);
+        }
+        .day-cell.active .day-num { color: white; }
+
+        /* Event Bars in Grid */
+        .event-bar {
+            font-size: 11px; font-weight: 600; padding: 4px 7px;
+            border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        /* Sidebar */
+        .sidebar { display: flex; flex-direction: column; gap: 30px; }
+        
+        .side-card {
+            background: #1b2435; border-radius: 28px; padding: 35px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.35); transition: 0.25s;
+        }
+
+        .side-title { font-size: 18px; font-weight: 700; color: white; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        
+        .upc-list { display: flex; flex-direction: column; gap: 18px; }
+        .upc-item { display: flex; gap: 15px; align-items: flex-start; }
+        
+        .upc-date {
+            background: #111827; border-radius: 12px; width: 50px; text-align: center; padding: 8px 0;
+            flex-shrink: 0; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.02);
+        }
+        .upc-month { font-size: 10px; font-weight: 600; color: #7f8aa8; text-transform: uppercase; }
+        .upc-day { font-size: 16px; font-weight: 700; color: white; line-height: 1.1; margin-top: 2px; }
+        
+        .upc-info { flex: 1; min-width: 0; }
+        .upc-title { font-size: 14px; font-weight: 600; color: white; line-height: 1.4; margin-bottom: 6px; }
+        
+        .type-badge {
+            display: inline-block; font-size: 10px; font-weight: 600;
+            padding: 3px 8px; border-radius: 6px;
+        }
+
+        /* Legend Grid */
+        .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #aab4d6; font-weight: 500; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 4px; }
+
+        /* Empty States */
+        .empty-state { text-align: center; padding: 20px 10px; }
+        .empty-icon { font-size: 38px; margin-bottom: 15px; opacity: 0.8; }
+        .empty-text { font-size: 14px; color: #7f8aa8; line-height: 1.6; }
+
+        /* Type Colors (Google Calendar style pills) */
+        .t-academic { background: rgba(79, 102, 255, 0.15); color: #9eb1ff; border-left: 2px solid #4f66ff; }
+        .t-exam     { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border-left: 2px solid #a855f7; }
+        .t-holiday  { background: rgba(249, 115, 22, 0.15); color: #fdba74; border-left: 2px solid #f97316; }
+        .t-deadline { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-left: 2px solid #ef4444; }
+        .t-result   { background: rgba(34, 197, 94, 0.15); color: #86efac; border-left: 2px solid #22c55e; }
+        .t-event    { background: rgba(20, 184, 166, 0.15); color: #5eead4; border-left: 2px solid #14b8a6; }
+
+        .bg-academic { background: #4f66ff; } .bg-exam { background: #a855f7; }
+        .bg-holiday { background: #f97316; } .bg-deadline { background: #ef4444; }
+        .bg-result { background: #22c55e; } .bg-event { background: #14b8a6; }
+
+        /* Popup overlay */
+        .popup-overlay {
+            position: fixed; inset: 0; background: rgba(8, 18, 37, 0.85);
+            backdrop-filter: blur(5px); z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px;
+        }
+        .popup-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .popup-box {
+            background: #111827; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px; padding: 35px; width: 100%; max-width: 460px;
+            transform: translateY(20px); transition: 0.3s;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+        .popup-overlay.active .popup-box { transform: translateY(0); }
+        
+        .pop-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .pop-title { font-size: 22px; font-weight: 700; color: white; }
+        .pop-close { background: #1b2435; border: none; color: #aab4d6; font-size: 20px; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; transition: 0.2s; display:flex; align-items:center; justify-content:center;}
+        .pop-close:hover { background: #ef4444; color: white; }
+
+        .pop-ev { background: #1b2435; border-radius: 16px; padding: 18px; margin-bottom: 15px; }
+        .pop-ev:last-child { margin-bottom: 0; }
+        .pop-ev-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .pop-ev-name { font-size: 16px; font-weight: 600; color: white; }
+        .pop-ev-desc { font-size: 13px; color: #aab4d6; line-height: 1.6; }
+
+        /* Responsive */
+        @media(max-width: 900px) {
+            .layout { grid-template-columns: 1fr; }
+            .day-cell { min-height: 70px; padding: 4px; }
+            .day-num { width: 20px; height: 20px; font-size: 12px; }
+            .event-bar { font-size: 9px; padding: 2px 4px; border-left-width: 2px; }
+            .navbar { flex-direction: column; align-items: stretch; gap: 20px;}
+            #programSelect { min-width: 100%; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow glow1"></div>
+    <div class="glow glow2"></div>
+
+    <div class="container">
+        <!-- Navbar -->
+        <div class="navbar">
+            <a href="index.html" class="logo-wrap">
+                <div class="back-arrow">&#8592;</div>
+                <div class="logo-text">Uni<span>Compass</span></div>
+            </a>
+            <div class="program-selector">
+                <label>Program Calendar</label>
+                <select id="programSelect" onchange="onProgramChange()">
+                    <option value="">— Select your program —</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layout">
+            <!-- Calendar Grid -->
+            <div class="cal-wrapper">
+                <div class="cal-header">
+                    <div class="month-name" id="monthTitle">Month <span class="year-name">Year</span></div>
+                    <div class="nav-buttons">
+                        <button class="nav-btn" onclick="changeMonth(-1)">&#8592;</button>
+                        <button class="nav-btn" onclick="changeMonth(1)">&#8594;</button>
+                    </div>
+                </div>
+
+                <div class="days-header">
+                    <div class="day-label">Sun</div><div class="day-label">Mon</div>
+                    <div class="day-label">Tue</div><div class="day-label">Wed</div>
+                    <div class="day-label">Thu</div><div class="day-label">Fri</div>
+                    <div class="day-label">Sat</div>
+                </div>
+
+                <div class="cal-grid" id="calGrid"></div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Upcoming -->
+                <div class="side-card">
+                    <div class="side-title">✨ Upcoming Events</div>
+                    <div id="upcomingList">
+                        <div class="empty-state">
+                            <div class="empty-icon">📅</div>
+                            <div class="empty-text">Select a program to see upcoming events</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="side-card">
+                    <div class="side-title">📌 Legend</div>
+                    <div class="legend-grid">
+                        <div class="legend-item"><div class="legend-dot bg-academic"></div> Academic</div>
+                        <div class="legend-item"><div class="legend-dot bg-exam"></div> Examination</div>
+                        <div class="legend-item"><div class="legend-dot bg-holiday"></div> Holiday</div>
+                        <div class="legend-item"><div class="legend-dot bg-deadline"></div> Deadline</div>
+                        <div class="legend-item"><div class="legend-dot bg-result"></div> Result</div>
+                        <div class="legend-item"><div class="legend-dot bg-event"></div> Event</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup-overlay" id="popupOverlay" onclick="if(event.target===this) closePopup()">
+        <div class="popup-box">
+            <div class="pop-head">
+                <div class="pop-title" id="popupTitle">Date</div>
+                <button class="pop-close" onclick="closePopup()">✕</button>
+            </div>
+            <div id="popupList"></div>
+        </div>
+    </div>
+
+    <script>
+        const PROGRAMS = [
+            { slug: "btech-cse", label: "B.Tech — Computer Science and Engineering" },
+            { slug: "btech-aids", label: "B.Tech — Artificial Intelligence & Data Science" },
+            { slug: "btech-cse-iot", label: "B.Tech — CSE (Internet of Things)" },
+            { slug: "btech-cse-cs", label: "B.Tech — CSE (Cyber Security)" },
+            { slug: "btech-eee", label: "B.Tech — Electrical and Electronics Engineering" },
+            { slug: "btech-ece", label: "B.Tech — Electronics and Communication Engineering" },
+            { slug: "btech-ece-vlsi", label: "B.Tech — ECE (VLSI Design and Technology)" },
+            { slug: "btech-it", label: "B.Tech — Information Technology" },
+            { slug: "bcom", label: "B.Com" },
+            { slug: "bcom-hons", label: "B.Com — Honours" },
+            { slug: "bcom-pa", label: "B.Com — Professional Accounting" },
+            { slug: "bsc-econ", label: "B.Sc — Economics (Data Science)" },
+            { slug: "ballb", label: "B.A., LL.B" },
+            { slug: "mtech-aids", label: "M.Tech — AI and Data Science" },
+            { slug: "mtech-cse", label: "M.Tech — Computer Science and Engineering" },
+            { slug: "mtech-it", label: "M.Tech — Information Technology" },
+            { slug: "mtech-pe", label: "M.Tech — Power Electronics and Drives" },
+            { slug: "mtech-vlsi", label: "M.Tech — VLSI Design" },
+            { slug: "mtech-wct", label: "M.Tech — Wireless Communication Technology" },
+            { slug: "mba", label: "MBA" },
+            { slug: "phd", label: "Ph.D" }
+        ];
+
+        let calendarData = null;
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth();
+        const todayStr = new Date().toISOString().split("T")[0];
+
+        (function init() {
+            const sel = document.getElementById("programSelect");
+            PROGRAMS.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.slug; opt.textContent = p.label;
+                sel.appendChild(opt);
+            });
+            renderCalendar();
+        })();
+
+        async function onProgramChange() {
+            const slug = document.getElementById("programSelect").value;
+            if (!slug) { calendarData = null; renderCalendar(); renderSidebar(); return; }
+
+            try {
+                const r = await fetch("calendars/" + slug + ".json");
+                if (!r.ok) throw new Error("not found");
+                calendarData = await r.json();
+            } catch {
+                const saved = localStorage.getItem("uc_cal_" + slug);
+                if (saved) calendarData = JSON.parse(saved);
+                else calendarData = null;
+            }
+
+            renderCalendar();
+            renderSidebar();
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById("calGrid");
+            grid.innerHTML = "";
+
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById("monthTitle").innerHTML = `${months[currentMonth]} <span class="year-name">${currentYear}</span>`;
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            const eventsMap = {};
+            if (calendarData && calendarData.events) {
+                calendarData.events.forEach(e => {
+                    const d = new Date(e.date);
+                    if (d.getFullYear() === currentYear && d.getMonth() === currentMonth) {
+                        const day = d.getDate();
+                        if (!eventsMap[day]) eventsMap[day] = [];
+                        eventsMap[day].push(e);
+                    }
+                });
+            }
+
+            for (let i = 0; i < firstDay; i++) {
+                const blank = document.createElement("div");
+                blank.className = "day-cell empty";
+                grid.appendChild(blank);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                const events = eventsMap[day] || [];
+                const isToday = (dateStr === todayStr);
+                const isHol = events.some(e => e.type === "holiday");
+
+                const cell = document.createElement("div");
+                cell.className = "day-cell" + (events.length ? " active" : "") + (isHol ? " holiday" : "") + (isToday ? " today" : "");
+                
+                cell.innerHTML = `<div class="day-num">${day}</div>`;
+                
+                if (events.length) {
+                    events.slice(0, 3).forEach(e => {
+                        const bar = document.createElement("div");
+                        bar.className = `event-bar t-${e.type}`;
+                        bar.textContent = e.title;
+                        cell.appendChild(bar);
+                    });
+                    if(events.length > 3) {
+                        const more = document.createElement("div");
+                        more.className = "event-bar";
+                        more.style.background = "rgba(255,255,255,0.05)";
+                        more.style.color = "#94a3b8";
+                        more.textContent = `+${events.length - 3} more`;
+                        cell.appendChild(more);
+                    }
+                    cell.onclick = () => openPopup(dateStr, events);
+                }
+                grid.appendChild(cell);
+            }
+        }
+
+        function renderSidebar() {
+            const list = document.getElementById("upcomingList");
+
+            if (!calendarData || !calendarData.events) {
+                list.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Select a program to see upcoming events</div></div>`;
+                return;
+            }
+
+            const upcoming = calendarData.events
+                .filter(e => e.date >= todayStr)
+                .sort((a, b) => a.date.localeCompare(b.date))
+                .slice(0, 7);
+
+            if (!upcoming.length) {
+                list.innerHTML = `<div class="empty-state"><div class="empty-icon">🎉</div><div class="empty-text">No upcoming events found</div></div>`;
+                return;
+            }
+
+            list.innerHTML = `<div class="upc-list"></div>`;
+            const ul = list.querySelector(".upc-list");
+
+            upcoming.forEach(e => {
+                const d = new Date(e.date + "T00:00:00");
+                const month = d.toLocaleDateString("en-IN", { month: "short" });
+                const day = d.getDate();
+                
+                ul.innerHTML += `
+                    <div class="upc-item">
+                        <div class="upc-date">
+                            <span class="upc-month">${month}</span>
+                            <span class="upc-day">${day}</span>
+                        </div>
+                        <div class="upc-info">
+                            <div class="upc-title">${e.title}</div>
+                            <span class="type-badge t-${e.type}">${cap(e.type)}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function changeMonth(dir) {
+            currentMonth += dir;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        }
+
+        function openPopup(dateStr, events) {
+            const d = new Date(dateStr + "T00:00:00");
+            document.getElementById("popupTitle").textContent = d.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+            
+            const listEl = document.getElementById("popupList");
+            listEl.innerHTML = events.map(e => `
+                <div class="pop-ev t-${e.type}" style="background:rgba(30,41,59,0.8); border:1px solid rgba(255,255,255,0.05);">
+                    <div class="pop-ev-top">
+                        <div class="pop-ev-name">${e.title}</div>
+                        <span class="type-badge t-${e.type}">${cap(e.type)}</span>
+                    </div>
+                    ${e.description ? `<div class="pop-ev-desc">${e.description}</div>` : ""}
+                </div>
+            `).join("");
+
+            document.getElementById("popupOverlay").classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closePopup() {
+            document.getElementById("popupOverlay").classList.remove("active");
+            document.body.style.overflow = "";
+        }
+
+        function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ""; }
+    </script>
+</body>
+</html>
