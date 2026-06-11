@@ -148,7 +148,6 @@ lbl { display: block; color: #aab4d6; font-size: 13px; font-weight: 500; margin-
         <select class="si" id="adminProg" onchange="onProgChange()">
           <option value="">— Select program to edit —</option>
         </select>
-        <button class="btn btn-s" onclick="clearAll()">🗑 Clear Events</button>
         <a href="academic-calendar.html" target="_blank" class="btn btn-s" style="text-decoration:none;">👁 Preview Live</a>
       </div>
 
@@ -156,18 +155,22 @@ lbl { display: block; color: #aab4d6; font-size: 13px; font-weight: 500; margin-
         <div class="card">
           <div class="card-h">✏️ Add Event <span class="cnt" id="cntBadge">0</span></div>
           <lbl>Date</lbl>
-          <input class="fi" type="date" id="evDate">
+          <div style="display:flex; gap:10px;">
+              <input class="fi" type="date" id="evDate" title="Start Date" style="flex:1;">
+              <input class="fi" type="date" id="evEndDate" title="End Date (optional)" style="flex:1;">
+          </div>
           <lbl>Title</lbl>
           <input class="fi" type="text" id="evTitle" placeholder="e.g. CIA - I, Independence Day">
           <lbl>Type</lbl>
-          <select class="si" id="evType">
-            <option value="academic">Academic</option>
-            <option value="exam">Exam</option>
-            <option value="holiday">Holiday</option>
-            <option value="deadline">Deadline</option>
-            <option value="result">Result</option>
-            <option value="event">Event</option>
-          </select>
+          <input class="fi" type="text" id="evType" list="eventTypes" placeholder="e.g. Holiday, Exam" value="academic">
+          <datalist id="eventTypes">
+            <option value="academic">
+            <option value="exam">
+            <option value="holiday">
+            <option value="deadline">
+            <option value="result">
+            <option value="event">
+          </datalist>
           <lbl>Description (optional)</lbl>
           <textarea class="ti" id="evDesc" placeholder="Brief description..."></textarea>
           <lbl id="evApplyToLabel">Apply to Program(s)</lbl>
@@ -212,6 +215,8 @@ lbl { display: block; color: #aab4d6; font-size: 13px; font-weight: 500; margin-
           <input class="fi" type="text" id="profDept" placeholder="e.g. Computer Science">
           <lbl>Email Address</lbl>
           <input class="fi" type="email" id="profEmail" placeholder="e.g. jane.doe@snu.edu.in">
+          <lbl>Room / Cabin Number (optional)</lbl>
+          <input class="fi" type="text" id="profRoom" placeholder="e.g. C-302">
           
           <div style="display:flex; gap:10px;">
               <button class="btn btn-p" id="profSaveBtn" onclick="saveProfessor()">+ Add Professor</button>
@@ -381,14 +386,19 @@ function addEvent() {
     if(!selectedSlugs.length) { err.textContent = "Select at least one program."; return; }
 
     const date  = document.getElementById("evDate").value;
+    const endDate = document.getElementById("evEndDate").value;
     const title = document.getElementById("evTitle").value.trim();
-    const type  = document.getElementById("evType").value;
+    const type  = document.getElementById("evType").value.trim().toLowerCase();
     const desc  = document.getElementById("evDesc").value.trim();
     if(!date)  { err.textContent = "Pick a date."; return; }
     if(!title) { err.textContent = "Enter a title."; return; }
+    if(!type)  { err.textContent = "Enter an event type."; return; }
+
+    const eventObj = { date, title, type, description: desc };
+    if(endDate) eventObj.endDate = endDate;
 
     if (editingEventIndex !== -1) {
-        calEvents[editingEventIndex] = { date, title, type, description: desc };
+        calEvents[editingEventIndex] = eventObj;
         calEvents.sort((a,b) => a.date.localeCompare(b.date));
         saveCalendar();
         resetEventForm();
@@ -403,7 +413,7 @@ function addEvent() {
         const docRef = db.collection("calendars").doc(s);
         const doc = await docRef.get();
         let pEvents = doc.exists ? (doc.data().events || []) : [];
-        pEvents.push({date, title, type, description: desc});
+        pEvents.push(eventObj);
         pEvents.sort((a,b) => a.date.localeCompare(b.date));
         
         const prog = PROGRAMS.find(p => p.slug === s);
@@ -425,11 +435,11 @@ function addEvent() {
 }
 
 function deleteEvent(i) { calEvents.splice(i, 1); saveCalendar(); }
-function clearAll() { if(!calSlug || !confirm("Clear all events for " + calLabel + "?")) return; calEvents = []; saveCalendar(); }
 
 function editEvent(i) {
     const e = calEvents[i];
     document.getElementById("evDate").value = e.date;
+    document.getElementById("evEndDate").value = e.endDate || "";
     document.getElementById("evTitle").value = e.title;
     document.getElementById("evType").value = e.type;
     document.getElementById("evDesc").value = e.description || "";
@@ -445,6 +455,7 @@ function editEvent(i) {
 function resetEventForm() {
     editingEventIndex = -1;
     document.getElementById("evDate").value = "";
+    document.getElementById("evEndDate").value = "";
     document.getElementById("evTitle").value = "";
     document.getElementById("evDesc").value = "";
     document.getElementById("evType").value = "academic";
@@ -482,7 +493,11 @@ function renderCalendar() {
         const c  = TYPE_COLOR[e.type] || "#aab4d6";
         const bg = TYPE_BG[e.type]   || "rgba(170,180,214,0.15)";
         const d  = new Date(e.date + "T00:00:00");
-        const dl = d.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+        let dl = d.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+        if (e.endDate) {
+            const ed = new Date(e.endDate + "T00:00:00");
+            dl += " – " + ed.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+        }
         const row = document.createElement("div"); row.className = "ev-row"; row.style.borderLeftColor = c;
         row.innerHTML = `
             <div class="ev-left">
@@ -536,7 +551,8 @@ function renderProfessors() {
             <div>
                 <div class="prof-name">${p.name}</div>
                 <div class="prof-role">${p.role || 'Professor'} • ${p.department || 'General'}</div>
-                <div class="prof-email">✉️ ${p.email}</div>
+                <div class="prof-email" style="margin-bottom:2px;">✉️ ${p.email}</div>
+                ${p.room ? `<div class="prof-room" style="color:#7f8aa8; font-size:12px;">🚪 Room: ${p.room}</div>` : ""}
             </div>
             <div style="display:flex; gap:8px; margin-top:4px;">
                 <button class="btn btn-s" onclick="editProfessor('${p.id}')">Edit</button>
@@ -555,6 +571,7 @@ function editProfessor(id) {
     document.getElementById("profRole").value = p.role || "";
     document.getElementById("profDept").value = p.department || "";
     document.getElementById("profEmail").value = p.email || "";
+    document.getElementById("profRoom").value = p.room || "";
     
     document.getElementById("profSaveBtn").textContent = "Save Changes";
     document.getElementById("profCancelBtn").style.display = "block";
@@ -567,6 +584,7 @@ function resetProfForm() {
     document.getElementById("profRole").value = "";
     document.getElementById("profDept").value = "";
     document.getElementById("profEmail").value = "";
+    document.getElementById("profRoom").value = "";
     document.getElementById("profSaveBtn").textContent = "+ Add Professor";
     document.getElementById("profCancelBtn").style.display = "none";
 }
@@ -578,15 +596,16 @@ async function saveProfessor() {
     const role = document.getElementById("profRole").value.trim();
     const department = document.getElementById("profDept").value.trim();
     const email = document.getElementById("profEmail").value.trim();
+    const room = document.getElementById("profRoom").value.trim();
 
     if(!name || !email) { err.textContent = "Name and Email are required."; return; }
     err.className = "ok-msg"; err.style.color = "#9eb1ff"; err.textContent = "⏳ Saving...";
 
     try {
         if(id) {
-            await db.collection("professors").doc(id).update({ name, role, department, email });
+            await db.collection("professors").doc(id).update({ name, role, department, email, room });
         } else {
-            await db.collection("professors").add({ name, role, department, email });
+            await db.collection("professors").add({ name, role, department, email, room });
         }
         resetProfForm();
         await loadProfessors();

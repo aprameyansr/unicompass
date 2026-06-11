@@ -148,6 +148,7 @@
         .type-badge {
             display: inline-block; font-size: 10px; font-weight: 600;
             padding: 3px 8px; border-radius: 6px;
+            background: rgba(170,180,214,0.15); color: #aab4d6; border-left: 2px solid #aab4d6;
         }
 
         /* Legend Grid */
@@ -379,11 +380,18 @@
             const eventsMap = {};
             if (calendarData && calendarData.events) {
                 calendarData.events.forEach(e => {
-                    const d = new Date(e.date);
-                    if (d.getFullYear() === currentYear && d.getMonth() === currentMonth) {
-                        const day = d.getDate();
-                        if (!eventsMap[day]) eventsMap[day] = [];
-                        eventsMap[day].push(e);
+                    const startD = new Date(e.date);
+                    const endD = e.endDate ? new Date(e.endDate) : new Date(e.date);
+                    
+                    // Loop from startD to endD (inclusive)
+                    let currD = new Date(startD);
+                    while (currD <= endD) {
+                        if (currD.getFullYear() === currentYear && currD.getMonth() === currentMonth) {
+                            const day = currD.getDate();
+                            if (!eventsMap[day]) eventsMap[day] = [];
+                            eventsMap[day].push(e);
+                        }
+                        currD.setDate(currD.getDate() + 1);
                     }
                 });
             }
@@ -409,6 +417,11 @@
                     events.slice(0, 3).forEach(e => {
                         const bar = document.createElement("div");
                         bar.className = `event-bar t-${e.type}`;
+                        if (!["academic","exam","holiday","deadline","result","event"].includes(e.type)) {
+                            bar.style.background = "rgba(170,180,214,0.15)";
+                            bar.style.color = "#aab4d6";
+                            bar.style.borderLeftColor = "#aab4d6";
+                        }
                         bar.textContent = e.title;
                         cell.appendChild(bar);
                     });
@@ -435,7 +448,7 @@
             }
 
             const upcoming = calendarData.events
-                .filter(e => e.date >= todayStr)
+                .filter(e => (e.endDate || e.date) >= todayStr)
                 .sort((a, b) => a.date.localeCompare(b.date))
                 .slice(0, 7);
 
