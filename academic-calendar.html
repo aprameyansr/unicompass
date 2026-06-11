@@ -292,7 +292,16 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script>
+        if (!firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+        }
+        const db = firebase.firestore();
+
         const PROGRAMS = [
             { slug: "btech-cse", label: "B.Tech — Computer Science and Engineering" },
             { slug: "btech-aids", label: "B.Tech — Artificial Intelligence & Data Science" },
@@ -336,16 +345,23 @@
             const slug = document.getElementById("programSelect").value;
             if (!slug) { calendarData = null; renderCalendar(); renderSidebar(); return; }
 
+            const btn = document.getElementById("programSelect");
+            const oldText = btn.options[btn.selectedIndex].text;
+            btn.options[btn.selectedIndex].text = "Loading...";
+
             try {
-                const r = await fetch("calendars/" + slug + ".json");
-                if (!r.ok) throw new Error("not found");
-                calendarData = await r.json();
-            } catch {
-                const saved = localStorage.getItem("uc_cal_" + slug);
-                if (saved) calendarData = JSON.parse(saved);
-                else calendarData = null;
+                const doc = await db.collection("calendars").doc(slug).get();
+                if (doc.exists) {
+                    calendarData = doc.data();
+                } else {
+                    calendarData = null;
+                }
+            } catch (e) {
+                console.error("Firestore error:", e);
+                calendarData = null;
             }
 
+            btn.options[btn.selectedIndex].text = oldText;
             renderCalendar();
             renderSidebar();
         }

@@ -155,29 +155,7 @@ lbl{display:block;color:#aab4d6;font-size:12px;font-weight:500;margin-bottom:6px
         <div class="err-msg" id="addErr"></div>
       </div>
 
-      <!-- GitHub push -->
-      <div class="card">
-        <div class="card-h">🚀 Publish to GitHub</div>
-        <div style="color:#aab4d6;font-size:13px;margin-bottom:14px;line-height:1.7;">
-          Enter your GitHub details once — then click <b>Push</b> to publish the calendar directly to your repo. No file handling needed.
-        </div>
-        <lbl>GitHub Username / Org</lbl>
-        <input class="fi" type="text" id="ghOwner" placeholder="e.g. aprameyansr">
-        <lbl>Repository Name</lbl>
-        <input class="fi" type="text" id="ghRepo" placeholder="e.g. unicompass">
-        <lbl>Personal Access Token <span style="color:#7f8aa8;font-size:11px;">(Contents: read+write)</span></lbl>
-        <input class="fi" type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
-        <div style="display:flex;gap:10px;">
-          <button class="btn btn-s" style="flex:1;" onclick="saveGHSettings()">💾 Save Settings</button>
-          <button class="btn btn-g" style="flex:1;" onclick="pushToGitHub()">⬆ Push to GitHub</button>
-        </div>
-        <div class="gh-status" id="ghStatus"></div>
-        <div class="divider"></div>
-        <div style="color:#7f8aa8;font-size:12px;line-height:1.8;">
-          🔑 <b>How to get a token:</b><br>
-          GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → New token → set <i>Contents: Read and Write</i> for this repo only.
-        </div>
-      </div>
+
 
     </div>
 
@@ -187,15 +165,19 @@ lbl{display:block;color:#aab4d6;font-size:12px;font-weight:500;margin-bottom:6px
         <div class="card-h">📋 Events <span id="progLabel" style="color:#7f8aa8;font-size:13px;font-weight:400;">— select a program</span></div>
         <div id="eventList"><div class="empty"><div class="ico">📅</div>Select a program and add events</div></div>
         <div class="divider"></div>
-        <button class="btn btn-g" onclick="pushToGitHub()">⬆ Push to GitHub — Publish Live</button>
-        <div style="color:#7f8aa8;font-size:12px;margin-top:10px;">
-          Changes save automatically to your browser. Click Push to make them live for all users.
+        <div style="color:#22c55e;font-size:12px;margin-top:10px;text-align:center;">
+          🟢 Connected to Firebase. Changes are saved live instantly.
         </div>
       </div>
     </div>
   </div>
 </div>
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 
 <script>
 const ADMIN_PASSWORD = "snucal2026";
@@ -230,17 +212,32 @@ const TYPE_BG    = {academic:"rgba(79,102,255,0.18)",exam:"rgba(168,85,247,0.18)
 let slug  = "";
 let label = "";
 let events = [];
+let db = null;
 
 /* ---- Auth ---- */
 function checkPwd() {
-    if(document.getElementById("pwdInput").value === ADMIN_PASSWORD) {
-        document.getElementById("lockScreen").style.display = "none";
-        document.getElementById("mainPanel").style.display  = "block";
-        initPanel();
-    } else {
-        document.getElementById("pwdErr").textContent = "Incorrect password.";
-        document.getElementById("pwdInput").value = "";
+    const err = document.getElementById("pwdErr");
+    const pwd = document.getElementById("pwdInput").value;
+    if(!pwd) { err.textContent = "Enter password."; return; }
+    
+    err.textContent = "Authenticating...";
+    
+    if (!firebase.apps.length) {
+        firebase.initializeApp(FIREBASE_CONFIG);
     }
+    const auth = firebase.auth();
+    db = firebase.firestore();
+
+    auth.signInWithEmailAndPassword("admin@unicompass.com", pwd)
+        .then(() => {
+            document.getElementById("lockScreen").style.display = "none";
+            document.getElementById("mainPanel").style.display  = "block";
+            initPanel();
+        })
+        .catch(error => {
+            err.textContent = "Invalid admin credentials.";
+            document.getElementById("pwdInput").value = "";
+        });
 }
 
 function initPanel() {
@@ -255,25 +252,42 @@ function initPanel() {
         mo.value = p.slug; mo.textContent = p.label;
         multiSel.appendChild(mo);
     });
-    // Restore GitHub settings
-    document.getElementById("ghOwner").value = localStorage.getItem("uc_gh_owner") || "";
-    document.getElementById("ghRepo").value  = localStorage.getItem("uc_gh_repo")  || "";
-    document.getElementById("ghToken").value = localStorage.getItem("uc_gh_token") || "";
+    });
 }
 
 /* ---- Program ---- */
-function onProgChange() {
+async function onProgChange() {
     const sel = document.getElementById("adminProg");
     slug  = sel.value;
     label = sel.options[sel.selectedIndex]?.text || "";
-    events = slug ? (JSON.parse(localStorage.getItem("uc_cal_" + slug) || "[]")) : [];
-    document.getElementById("progLabel").textContent = label || "— select a program";
+    document.getElementById("progLabel").textContent = (label || "— select a program") + " (Loading...)";
 
     const applyTo = document.getElementById("evApplyTo");
     if(applyTo) {
         for(let i=0; i<applyTo.options.length; i++) {
             applyTo.options[i].selected = (applyTo.options[i].value === slug);
         }
+    }
+
+    if (!slug) {
+        events = [];
+        document.getElementById("progLabel").textContent = "— select a program";
+        render();
+        return;
+    }
+
+    try {
+        const doc = await db.collection("calendars").doc(slug).get();
+        if (doc.exists) {
+            events = doc.data().events || [];
+        } else {
+            events = [];
+        }
+        document.getElementById("progLabel").textContent = label;
+    } catch (e) {
+        console.error(e);
+        events = [];
+        document.getElementById("progLabel").textContent = label + " (Error loading)";
     }
     render();
 }
@@ -296,38 +310,63 @@ function addEvent() {
     if(!date)  { err.textContent = "Pick a date."; return; }
     if(!title) { err.textContent = "Enter a title."; return; }
 
-    selectedSlugs.forEach(s => {
-        let pEvents = JSON.parse(localStorage.getItem("uc_cal_" + s) || "[]");
+    err.className = "gh-status loading";
+    err.textContent = "⏳ Saving to Firestore...";
+
+    Promise.all(selectedSlugs.map(async s => {
+        const docRef = db.collection("calendars").doc(s);
+        const doc = await docRef.get();
+        let pEvents = doc.exists ? (doc.data().events || []) : [];
         pEvents.push({date, title, type, description: desc});
         pEvents.sort((a,b) => a.date.localeCompare(b.date));
-        localStorage.setItem("uc_cal_" + s, JSON.stringify(pEvents));
+        
+        const prog = PROGRAMS.find(p => p.slug === s);
+        return docRef.set({
+            program: prog?.label || "",
+            degree: (prog?.label || "").split("—")[0].trim(),
+            academicYear: new Date().getFullYear() + "-" + (new Date().getFullYear() + 1),
+            lastUpdated: new Date().toISOString().split("T")[0],
+            events: pEvents
+        }, { merge: true });
+    })).then(() => {
+        onProgChange();
+
+        document.getElementById("evDate").value  = "";
+        document.getElementById("evTitle").value = "";
+        document.getElementById("evDesc").value  = "";
+
+        err.className = "ok-msg";
+        err.textContent = `✅ Added event to ${selectedSlugs.length} program(s)`;
+        setTimeout(() => { if(err.textContent.includes("Added event")) err.textContent = ""; err.className = "err-msg"; }, 3000);
+    }).catch(e => {
+        err.className = "err-msg";
+        err.textContent = "❌ Error saving: " + e.message;
     });
-
-    onProgChange();
-
-    document.getElementById("evDate").value  = "";
-    document.getElementById("evTitle").value = "";
-    document.getElementById("evDesc").value  = "";
-
-    err.className = "ok-msg";
-    err.textContent = `✅ Added event to ${selectedSlugs.length} program(s)`;
-    setTimeout(() => { if(err.textContent.includes("Added event")) err.textContent = ""; err.className = "err-msg"; }, 3000);
 }
 
 function deleteEvent(i) {
     events.splice(i, 1);
-    save(); render();
+    save(); 
 }
 
 function clearAll() {
     if(!slug || !confirm("Clear all events for " + label + "?")) return;
     events = [];
-    save(); render();
+    save(); 
 }
 
 function save() {
-    if(slug) localStorage.setItem("uc_cal_" + slug, JSON.stringify(events));
-    document.getElementById("cntBadge").textContent = events.length;
+    if(!slug) return;
+    const prog = PROGRAMS.find(p => p.slug === slug);
+    db.collection("calendars").doc(slug).set({
+        program: prog?.label || label,
+        degree: (prog?.label || "").split("—")[0].trim(),
+        academicYear: new Date().getFullYear() + "-" + (new Date().getFullYear() + 1),
+        lastUpdated: new Date().toISOString().split("T")[0],
+        events: events
+    }, { merge: true }).then(() => {
+        render();
+    }).catch(e => alert("Error saving: " + e.message));
 }
 
 /* ---- Render ---- */
@@ -364,78 +403,7 @@ function render() {
     el.appendChild(wrap);
 }
 
-/* ---- GitHub Settings ---- */
-function saveGHSettings() {
-    localStorage.setItem("uc_gh_owner", document.getElementById("ghOwner").value.trim());
-    localStorage.setItem("uc_gh_repo",  document.getElementById("ghRepo").value.trim());
-    localStorage.setItem("uc_gh_token", document.getElementById("ghToken").value.trim());
-    const s = document.getElementById("ghStatus");
-    s.textContent = "✅ Settings saved to browser.";
-    s.className = "gh-status ok";
-}
 
-/* ---- Push to GitHub ---- */
-async function pushToGitHub() {
-    if(!slug) { alert("Select a program first."); return; }
-    if(!events.length) { alert("No events to publish."); return; }
-
-    const owner = localStorage.getItem("uc_gh_owner");
-    const repo  = localStorage.getItem("uc_gh_repo");
-    const token = localStorage.getItem("uc_gh_token");
-
-    if(!owner || !repo || !token) {
-        alert("Fill in and save your GitHub settings first.");
-        return;
-    }
-
-    const s = document.getElementById("ghStatus");
-    s.textContent = "⏳ Pushing to GitHub...";
-    s.className = "gh-status loading";
-
-    const prog = PROGRAMS.find(p => p.slug === slug);
-    const data = {
-        program:      prog?.label || label,
-        degree:       (prog?.label || "").split("—")[0].trim(),
-        academicYear: new Date().getFullYear() + "-" + (new Date().getFullYear() + 1),
-        lastUpdated:  new Date().toISOString().split("T")[0],
-        events
-    };
-
-    const content  = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    const filePath = `calendars/${slug}.json`;
-    const apiUrl   = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
-
-    // Get existing SHA if file exists (needed for update)
-    let sha = null;
-    try {
-        const check = await fetch(apiUrl, {headers:{"Authorization":"token " + token}});
-        if(check.ok) { sha = (await check.json()).sha; }
-    } catch {}
-
-    try {
-        const res = await fetch(apiUrl, {
-            method: "PUT",
-            headers: {"Authorization":"token " + token, "Content-Type":"application/json"},
-            body: JSON.stringify({
-                message: `Update ${slug} academic calendar`,
-                content,
-                ...(sha ? {sha} : {})
-            })
-        });
-
-        if(res.ok) {
-            s.textContent = "✅ Published! Calendar is live on GitHub Pages.";
-            s.className = "gh-status ok";
-        } else {
-            const err = await res.json();
-            s.textContent = "❌ " + (err.message || "Push failed. Check your token and repo name.");
-            s.className = "gh-status err";
-        }
-    } catch(err) {
-        s.textContent = "❌ Network error: " + err.message;
-        s.className = "gh-status err";
-    }
-}
 
 function cap(s) { return s ? s[0].toUpperCase() + s.slice(1) : ""; }
 </script>
