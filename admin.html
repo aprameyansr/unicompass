@@ -171,9 +171,9 @@ lbl { display: block; color: #aab4d6; font-size: 13px; font-weight: 500; margin-
           <lbl>Description (optional)</lbl>
           <textarea class="ti" id="evDesc" placeholder="Brief description..."></textarea>
           <lbl>Apply to Program(s)</lbl>
-          <select class="si" id="evApplyTo" multiple style="height:140px;">
-          </select>
-          <div style="color:#7f8aa8; font-size:12px; margin-top:-8px; margin-bottom:16px;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple</div>
+          <div id="evApplyToChecks" class="si" style="height:180px; overflow-y:auto; padding:8px 12px; display:flex; flex-direction:column; gap:8px; margin-bottom:16px; background: rgba(27,36,53,0.5);">
+            <!-- Checkboxes injected by JS -->
+          </div>
           <button class="btn btn-p" onclick="addEvent()">+ Add Event</button>
           <div class="err-msg" id="addErr"></div>
         </div>
@@ -311,10 +311,29 @@ let calEvents = [];
 
 function initCalendar() {
     const sel = document.getElementById("adminProg");
-    const multiSel = document.getElementById("evApplyTo");
+    const checkContainer = document.getElementById("evApplyToChecks");
     PROGRAMS.forEach(p => {
         sel.appendChild(new Option(p.label, p.slug));
-        multiSel.appendChild(new Option(p.label, p.slug));
+        
+        const lbl = document.createElement("label");
+        lbl.style.display = "flex";
+        lbl.style.alignItems = "center";
+        lbl.style.gap = "8px";
+        lbl.style.cursor = "pointer";
+        lbl.style.fontSize = "13px";
+        lbl.style.color = "#dbe4ff";
+        
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.value = p.slug;
+        cb.className = "prog-cb";
+        cb.style.accentColor = "#4f66ff";
+        cb.style.width = "16px";
+        cb.style.height = "16px";
+        
+        lbl.appendChild(cb);
+        lbl.appendChild(document.createTextNode(p.label));
+        checkContainer.appendChild(lbl);
     });
 }
 
@@ -324,12 +343,10 @@ async function onProgChange() {
     calLabel = sel.options[sel.selectedIndex]?.text || "";
     document.getElementById("progLabel").textContent = (calLabel || "— select a program") + " (Loading...)";
 
-    const applyTo = document.getElementById("evApplyTo");
-    if(applyTo) {
-        for(let i=0; i<applyTo.options.length; i++) {
-            applyTo.options[i].selected = (applyTo.options[i].value === calSlug);
-        }
-    }
+    const checkboxes = document.querySelectorAll(".prog-cb");
+    checkboxes.forEach(cb => {
+        cb.checked = (cb.value === calSlug);
+    });
 
     if (!calSlug) {
         calEvents = [];
@@ -354,8 +371,8 @@ function addEvent() {
     const err = document.getElementById("addErr");
     err.className = "err-msg"; err.textContent = "";
 
-    const multiSel = document.getElementById("evApplyTo");
-    const selectedSlugs = Array.from(multiSel.selectedOptions).map(o => o.value);
+    const checkboxes = document.querySelectorAll(".prog-cb:checked");
+    const selectedSlugs = Array.from(checkboxes).map(cb => cb.value);
 
     if(!selectedSlugs.length) { err.textContent = "Select at least one program."; return; }
 
