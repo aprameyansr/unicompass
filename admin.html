@@ -170,11 +170,14 @@ lbl { display: block; color: #aab4d6; font-size: 13px; font-weight: 500; margin-
           </select>
           <lbl>Description (optional)</lbl>
           <textarea class="ti" id="evDesc" placeholder="Brief description..."></textarea>
-          <lbl>Apply to Program(s)</lbl>
+          <lbl id="evApplyToLabel">Apply to Program(s)</lbl>
           <div id="evApplyToChecks" class="si" style="height:180px; overflow-y:auto; padding:8px 12px; display:flex; flex-direction:column; gap:8px; margin-bottom:16px; background: rgba(27,36,53,0.5);">
             <!-- Checkboxes injected by JS -->
           </div>
-          <button class="btn btn-p" onclick="addEvent()">+ Add Event</button>
+          <div style="display:flex; gap:10px;">
+              <button class="btn btn-p" id="evSaveBtn" onclick="addEvent()">+ Add Event</button>
+              <button class="btn btn-s" id="evCancelBtn" onclick="resetEventForm()" style="display:none;">Cancel</button>
+          </div>
           <div class="err-msg" id="addErr"></div>
         </div>
 
@@ -308,6 +311,7 @@ const TYPE_BG    = {academic:"rgba(79,102,255,0.18)",exam:"rgba(168,85,247,0.18)
 let calSlug = "";
 let calLabel = "";
 let calEvents = [];
+let editingEventIndex = -1;
 
 function initCalendar() {
     const sel = document.getElementById("adminProg");
@@ -383,6 +387,16 @@ function addEvent() {
     if(!date)  { err.textContent = "Pick a date."; return; }
     if(!title) { err.textContent = "Enter a title."; return; }
 
+    if (editingEventIndex !== -1) {
+        calEvents[editingEventIndex] = { date, title, type, description: desc };
+        calEvents.sort((a,b) => a.date.localeCompare(b.date));
+        saveCalendar();
+        resetEventForm();
+        err.className = "ok-msg"; err.style.color = ""; err.textContent = "✅ Event updated";
+        setTimeout(() => err.textContent = "", 3000);
+        return;
+    }
+
     err.className = "ok-msg"; err.style.color = "#9eb1ff"; err.textContent = "⏳ Saving to Firestore...";
 
     Promise.all(selectedSlugs.map(async s => {
@@ -402,9 +416,7 @@ function addEvent() {
         }, { merge: true });
     })).then(() => {
         onProgChange();
-        document.getElementById("evDate").value  = "";
-        document.getElementById("evTitle").value = "";
-        document.getElementById("evDesc").value  = "";
+        resetEventForm();
         err.className = "ok-msg"; err.style.color = ""; err.textContent = `✅ Added event to ${selectedSlugs.length} program(s)`;
         setTimeout(() => err.textContent = "", 3000);
     }).catch(e => {
@@ -414,6 +426,36 @@ function addEvent() {
 
 function deleteEvent(i) { calEvents.splice(i, 1); saveCalendar(); }
 function clearAll() { if(!calSlug || !confirm("Clear all events for " + calLabel + "?")) return; calEvents = []; saveCalendar(); }
+
+function editEvent(i) {
+    const e = calEvents[i];
+    document.getElementById("evDate").value = e.date;
+    document.getElementById("evTitle").value = e.title;
+    document.getElementById("evType").value = e.type;
+    document.getElementById("evDesc").value = e.description || "";
+    
+    editingEventIndex = i;
+    document.getElementById("evSaveBtn").textContent = "Save Changes";
+    document.getElementById("evCancelBtn").style.display = "block";
+    document.getElementById("evApplyToChecks").style.display = "none";
+    document.getElementById("evApplyToLabel").style.display = "none";
+    document.getElementById("evTitle").focus();
+}
+
+function resetEventForm() {
+    editingEventIndex = -1;
+    document.getElementById("evDate").value = "";
+    document.getElementById("evTitle").value = "";
+    document.getElementById("evDesc").value = "";
+    document.getElementById("evType").value = "academic";
+    
+    document.getElementById("evSaveBtn").textContent = "+ Add Event";
+    document.getElementById("evCancelBtn").style.display = "none";
+    document.getElementById("evApplyToChecks").style.display = "flex";
+    document.getElementById("evApplyToLabel").style.display = "block";
+    document.getElementById("addErr").textContent = "";
+    document.getElementById("addErr").className = "err-msg";
+}
 
 function saveCalendar() {
     if(!calSlug) return;
@@ -449,7 +491,10 @@ function renderCalendar() {
                 ${e.description ? `<div class="ev-desc">${e.description}</div>` : ""}
                 <span class="ev-badge" style="background:${bg};color:${c};">${e.type.toUpperCase()}</span>
             </div>
-            <div class="ev-actions"><button class="btn btn-d" onclick="deleteEvent(${i})">✕</button></div>`;
+            <div class="ev-actions" style="display:flex; gap:6px;">
+                <button class="btn btn-s" style="padding:4px 10px; font-size:11px;" onclick="editEvent(${i})">Edit</button>
+                <button class="btn btn-d" style="padding:4px 10px; font-size:11px;" onclick="deleteEvent(${i})">Delete</button>
+            </div>`;
         wrap.appendChild(row);
     });
     el.appendChild(wrap);
