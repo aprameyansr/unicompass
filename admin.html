@@ -155,22 +155,27 @@ lbl { display: block; color: #aab4d6; font-size: 13px; font-weight: 500; margin-
         <div class="card">
           <div class="card-h">✏️ Add Event <span class="cnt" id="cntBadge">0</span></div>
           <lbl>Date</lbl>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <input type="checkbox" id="evIsRange" onchange="toggleEndDate()" style="accent-color:#4f66ff; width:16px; height:16px; cursor:pointer;">
+              <label for="evIsRange" style="font-size:13px; color:#aab4d6; cursor:pointer;">Event spans multiple days</label>
+          </div>
           <div style="display:flex; gap:10px;">
               <input class="fi" type="date" id="evDate" title="Start Date" style="flex:1;">
-              <input class="fi" type="date" id="evEndDate" title="End Date (optional)" style="flex:1;">
+              <input class="fi" type="date" id="evEndDate" title="End Date" style="flex:1; display:none;">
           </div>
           <lbl>Title</lbl>
           <input class="fi" type="text" id="evTitle" placeholder="e.g. CIA - I, Independence Day">
           <lbl>Type</lbl>
-          <input class="fi" type="text" id="evType" list="eventTypes" placeholder="e.g. Holiday, Exam" value="academic">
-          <datalist id="eventTypes">
-            <option value="academic">
-            <option value="exam">
-            <option value="holiday">
-            <option value="deadline">
-            <option value="result">
-            <option value="event">
-          </datalist>
+          <select class="si" id="evType" onchange="toggleCustomType()">
+            <option value="academic">Academic / Important</option>
+            <option value="exam">Exam</option>
+            <option value="holiday">Holiday</option>
+            <option value="deadline">Deadline</option>
+            <option value="result">Result</option>
+            <option value="event">Event</option>
+            <option value="other">Other (Custom)...</option>
+          </select>
+          <input class="fi" type="text" id="evCustomType" placeholder="Enter custom type..." style="display:none; margin-top:10px;">
           <lbl>Description (optional)</lbl>
           <textarea class="ti" id="evDesc" placeholder="Brief description..."></textarea>
           <lbl id="evApplyToLabel">Apply to Program(s)</lbl>
@@ -386,9 +391,17 @@ function addEvent() {
     if(!selectedSlugs.length) { err.textContent = "Select at least one program."; return; }
 
     const date  = document.getElementById("evDate").value;
-    const endDate = document.getElementById("evEndDate").value;
+    let endDate = null;
+    if (document.getElementById("evIsRange").checked) {
+        endDate = document.getElementById("evEndDate").value;
+        if(!endDate) { err.textContent = "Pick an end date."; return; }
+        if(endDate < date) { err.textContent = "End date must be after start date."; return; }
+    }
     const title = document.getElementById("evTitle").value.trim();
-    const type  = document.getElementById("evType").value.trim().toLowerCase();
+    let type = document.getElementById("evType").value;
+    if (type === "other") {
+        type = document.getElementById("evCustomType").value.trim().toLowerCase();
+    }
     const desc  = document.getElementById("evDesc").value.trim();
     if(!date)  { err.textContent = "Pick a date."; return; }
     if(!title) { err.textContent = "Enter a title."; return; }
@@ -434,14 +447,47 @@ function addEvent() {
     });
 }
 
+function toggleEndDate() {
+    const isRange = document.getElementById("evIsRange").checked;
+    document.getElementById("evEndDate").style.display = isRange ? "block" : "none";
+    if (!isRange) document.getElementById("evEndDate").value = "";
+}
+
+function toggleCustomType() {
+    const type = document.getElementById("evType").value;
+    document.getElementById("evCustomType").style.display = type === "other" ? "block" : "none";
+    if (type !== "other") document.getElementById("evCustomType").value = "";
+}
+
 function deleteEvent(i) { calEvents.splice(i, 1); saveCalendar(); }
 
 function editEvent(i) {
     const e = calEvents[i];
     document.getElementById("evDate").value = e.date;
-    document.getElementById("evEndDate").value = e.endDate || "";
+    
+    if (e.endDate) {
+        document.getElementById("evIsRange").checked = true;
+        document.getElementById("evEndDate").style.display = "block";
+        document.getElementById("evEndDate").value = e.endDate;
+    } else {
+        document.getElementById("evIsRange").checked = false;
+        document.getElementById("evEndDate").style.display = "none";
+        document.getElementById("evEndDate").value = "";
+    }
+    
     document.getElementById("evTitle").value = e.title;
-    document.getElementById("evType").value = e.type;
+    
+    const defaultTypes = ["academic", "exam", "holiday", "deadline", "result", "event"];
+    if (defaultTypes.includes(e.type)) {
+        document.getElementById("evType").value = e.type;
+        document.getElementById("evCustomType").style.display = "none";
+        document.getElementById("evCustomType").value = "";
+    } else {
+        document.getElementById("evType").value = "other";
+        document.getElementById("evCustomType").style.display = "block";
+        document.getElementById("evCustomType").value = e.type;
+    }
+    
     document.getElementById("evDesc").value = e.description || "";
     
     editingEventIndex = i;
@@ -454,11 +500,15 @@ function editEvent(i) {
 
 function resetEventForm() {
     editingEventIndex = -1;
+    document.getElementById("evIsRange").checked = false;
     document.getElementById("evDate").value = "";
     document.getElementById("evEndDate").value = "";
+    document.getElementById("evEndDate").style.display = "none";
     document.getElementById("evTitle").value = "";
     document.getElementById("evDesc").value = "";
     document.getElementById("evType").value = "academic";
+    document.getElementById("evCustomType").value = "";
+    document.getElementById("evCustomType").style.display = "none";
     
     document.getElementById("evSaveBtn").textContent = "+ Add Event";
     document.getElementById("evCancelBtn").style.display = "none";
