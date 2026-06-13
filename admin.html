@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Universal Admin Dashboard · UniCompass</title>
+<title>Universal Admin Dashboard · snucHub</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,8 +166,8 @@ input:checked + .slider:before { transform: translateX(16px); background-color: 
   <div class="lock-card">
     <div class="lock-icon">🔐</div>
     <div class="lock-title">Admin Access</div>
-    <div class="lock-sub">UniCompass Universal Management</div>
-    <input class="fi" type="email" id="emailInput" value="admin@unicompass.com" placeholder="Admin Email" style="margin-bottom:12px;">
+    <div class="lock-sub">snucHub Universal Management</div>
+    <input class="fi" type="email" id="emailInput" value="admin@snuchub.com" placeholder="Admin Email" style="margin-bottom:12px;">
     <input class="fi" type="password" id="pwdInput" placeholder="Admin Password" style="margin-bottom:20px;" onkeydown="if(event.key==='Enter')checkPwd()">
     <button class="btn btn-p" onclick="checkPwd()">Unlock Dashboard</button>
     <div class="lock-err" id="pwdErr"></div>
@@ -178,7 +178,7 @@ input:checked + .slider:before { transform: translateX(16px); background-color: 
 <div id="dashboard">
   <!-- Sidebar -->
   <div class="sidebar">
-    <div class="brand"><a href="index.html">← UniCompass</a></div>
+    <div class="brand"><a href="index.html">← snucHub</a></div>
     
     <div class="nav-item active" onclick="switchTab('calendar', this)">
       📅 Academic Calendar
@@ -335,7 +335,7 @@ function checkPwd() {
     
     auth.signInWithEmailAndPassword(email, pwd)
         .then((cred) => {
-            if (cred.user.email !== "admin@unicompass.com") {
+            if (cred.user.email !== "admin@snuchub.com") {
                 auth.signOut();
                 throw new Error("Unauthorized: Not an admin account.");
             }

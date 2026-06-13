@@ -1,5 +1,5 @@
 /* ============================================================
-   AUTH.JS — UniCompass Firebase Auth System
+   AUTH.JS — snucHub Firebase Auth System
    ============================================================
    HOW TO ACTIVATE:
    1. Go to https://console.firebase.google.com
@@ -103,7 +103,7 @@ function bootAuth() {
     /* Abort if placeholder config is still in place */
     if (FIREBASE_CONFIG.apiKey === "PASTE_YOUR_API_KEY_HERE") {
         console.warn(
-            "[UniCompass Auth] Firebase config not set. " +
+            "[snucHub Auth] Firebase config not set. " +
             "Replace FIREBASE_CONFIG in auth.js with your project details."
         );
         renderNotConfigured();
@@ -154,7 +154,7 @@ function injectHTML() {
 
             <button class="uc-modal-close" id="uc-auth-close">✕</button>
 
-            <div class="uc-modal-logo">UniCompass</div>
+            <div class="uc-modal-logo">snucHub</div>
             <div class="uc-modal-subtitle">Sign in with your SNU Roll Number</div>
 
             <!-- Tabs -->
@@ -679,7 +679,7 @@ async function ucObFinish() {
         });
 
         document.getElementById("uc-onboard-overlay").classList.remove("active");
-        ucShowToast("Profile saved! Welcome to UniCompass 🎉");
+        ucShowToast("Profile saved! Welcome to snucHub 🎉");
         
         if (_ucCurrentUser) {
             _ucCurrentUser.displayName = name;
@@ -728,7 +728,7 @@ function showLoggedIn(name, data) {
     const navBtn = document.getElementById("uc-nav-btn");
     if (navBtn) {
         let displayStr = name || "Profile";
-        if (displayStr === "admin@unicompass.com") displayStr = "Admin";
+        if (displayStr === "admin@snuchub.com") displayStr = "Admin";
         navBtn.innerHTML = `<span style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">${initials}</span> ${displayStr}`;
     }
 
