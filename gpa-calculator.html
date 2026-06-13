@@ -267,7 +267,7 @@ function findGradeCombinations(courses, targetPoints) {
     let results = [];
     
     function search(index, currentPoints, currentCombo) {
-        if (results.length >= 5) return; // Limit to top 5 combinations
+        if (results.length >= 500) return; // Gather a pool to sort from, with a safe limit
         
         let maxRemaining = 0;
         for(let i = index; i < courses.length; i++) {
@@ -290,8 +290,21 @@ function findGradeCombinations(courses, targetPoints) {
             currentCombo.pop();
         }
     }
+    
     search(0, 0, []);
-    return results;
+    
+    // Sort results by lowest number of high grades (O, A+, etc.)
+    const gradeOrder = ['O', 'A+', 'A', 'B+', 'B', 'P'];
+    results.sort((a, b) => {
+        for(let g of gradeOrder) {
+            let countA = a.filter(x => x === g).length;
+            let countB = b.filter(x => x === g).length;
+            if(countA !== countB) return countA - countB;
+        }
+        return 0;
+    });
+
+    return results.slice(0, 5); // Return the top 5 best-fit combinations
 }
 
 function calculateGPA() {
