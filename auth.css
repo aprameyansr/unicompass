@@ -407,5 +407,25 @@
         right: 14px;
         padding: 10px 16px;
         font-size: 14px;
-    }
+}
+
+/* ---------- Back Button ---------- */
+.uc-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #aab4d6;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: 0.2s;
+    background: #1b2435;
+    padding: 10px 18px;
+    border-radius: 12px;
+}
+
+.uc-back-btn:hover {
+    color: white;
+    background: #4f66ff;
+    transform: translateX(-5px);
 }
