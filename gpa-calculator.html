@@ -181,7 +181,7 @@ function togglePredictMode() {
     }
 }
 
-function addRow(course = '', cred = '', gradeVal = '10', expectedVal = 'any') {
+function addRow(course = '', cred = '', gradeVal = '10', expectedVal = '') {
     const container = document.getElementById("rows-container");
     const predict = document.getElementById("predictMode").checked;
     const row = document.createElement("div");
@@ -196,15 +196,7 @@ function addRow(course = '', cred = '', gradeVal = '10', expectedVal = 'any') {
             <option value="7">B+</option>
             <option value="6">B</option>
             <option value="5">P</option>
-        </select>
-        <select class="expected-grade" style="display:none;">
-            <option value="any">Any Grade</option>
-            <option value="9-10">9 to 10 (A+ to O)</option>
-            <option value="8-10">8 to 10 (A to O)</option>
-            <option value="8-9">8 to 9 (A to A+)</option>
-            <option value="7-8">7 to 8 (B+ to A)</option>
-            <option value="10">Exactly 10 (O)</option>
-        </select>
+        <input type="text" class="expected-grade" style="display:none;" placeholder="e.g. 8-10, or 9">
     `;
 
     row.innerHTML = `
@@ -236,21 +228,36 @@ function deleteRow(btn) {
     }, 200);
 }
 
+// Parser for free-text expected grades
+function parseExpectedGrade(val) {
+    if (!val || val.trim() === '' || val.toLowerCase() === 'any') return [10, 9, 8, 7, 6, 5];
+    val = val.trim();
+    if (val.includes('-')) {
+        let parts = val.split('-');
+        let min = parseInt(parts[0]);
+        let max = parseInt(parts[1]);
+        if (!isNaN(min) && !isNaN(max)) {
+            if (min > max) { let temp = min; min = max; max = temp; }
+            let allowed = [];
+            for (let i = min; i <= max; i++) allowed.push(i);
+            return allowed;
+        }
+    } else if (val.includes(',')) {
+        return val.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
+    } else {
+        let single = parseInt(val);
+        if (!isNaN(single)) return [single];
+    }
+    return [10, 9, 8, 7, 6, 5]; // Default fallback
+}
+
 // Recursive backtracking to find mathematically valid grade combinations within constraints
 function findGradeCombinations(courses, targetPoints) {
     const gradeOptions = [
         {val: 5, name: 'P'}, {val: 6, name: 'B'}, {val: 7, name: 'B+'},
         {val: 8, name: 'A'}, {val: 9, name: 'A+'}, {val: 10, name: 'O'}
     ];
-    
-    const constraintsMap = {
-        "any": [10, 9, 8, 7, 6, 5],
-        "9-10": [10, 9],
-        "8-10": [10, 9, 8],
-        "8-9": [9, 8],
-        "7-8": [8, 7],
-        "10": [10]
-    };
+
 
     let results = [];
     
@@ -268,7 +275,7 @@ function findGradeCombinations(courses, targetPoints) {
             return;
         }
         
-        const allowedGrades = constraintsMap[courses[index].expected] || constraintsMap["any"];
+        const allowedGrades = parseExpectedGrade(courses[index].expected);
         
         for (let g of gradeOptions) {
             if (!allowedGrades.includes(g.val)) continue; // Respect the constraint
@@ -397,7 +404,7 @@ function saveData() {
             course: row.querySelector('input[type="text"]').value,
             credits: row.querySelector('.credits').value,
             grade: row.querySelector('.grade') ? row.querySelector('.grade').value : "10",
-            expected: row.querySelector('.expected-grade') ? row.querySelector('.expected-grade').value : "any"
+            expected: row.querySelector('.expected-grade') ? row.querySelector('.expected-grade').value : ""
         });
     });
     
@@ -428,9 +435,9 @@ function loadData() {
 }
 
 function initDefaultRows() {
-    addRow('', '', '10', 'any');
-    addRow('', '', '10', 'any');
-    addRow('', '', '10', 'any');
+    addRow('', '', '10', '');
+    addRow('', '', '10', '');
+    addRow('', '', '10', '');
 }
 
 function clearAll() {
