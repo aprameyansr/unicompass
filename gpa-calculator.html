@@ -196,7 +196,8 @@ function addRow(course = '', cred = '', gradeVal = '10', expectedVal = '') {
             <option value="7">B+</option>
             <option value="6">B</option>
             <option value="5">P</option>
-        <input type="text" class="expected-grade" style="display:none;" placeholder="e.g. 8-10, or 9">
+        </select>
+        <input type="text" class="expected-grade" style="display:none;" placeholder="e.g. 8-10, 5, 7">
     `;
 
     row.innerHTML = `
@@ -231,24 +232,28 @@ function deleteRow(btn) {
 // Parser for free-text expected grades
 function parseExpectedGrade(val) {
     if (!val || val.trim() === '' || val.toLowerCase() === 'any') return [10, 9, 8, 7, 6, 5];
-    val = val.trim();
-    if (val.includes('-')) {
-        let parts = val.split('-');
-        let min = parseInt(parts[0]);
-        let max = parseInt(parts[1]);
-        if (!isNaN(min) && !isNaN(max)) {
-            if (min > max) { let temp = min; min = max; max = temp; }
-            let allowed = [];
-            for (let i = min; i <= max; i++) allowed.push(i);
-            return allowed;
+    
+    let allowed = new Set();
+    let parts = val.split(',');
+    
+    for(let part of parts) {
+        part = part.trim();
+        if (part.includes('-')) {
+            let bounds = part.split('-');
+            let min = parseInt(bounds[0]);
+            let max = parseInt(bounds[1]);
+            if (!isNaN(min) && !isNaN(max)) {
+                if (min > max) { let temp = min; min = max; max = temp; }
+                for (let i = min; i <= max; i++) allowed.add(i);
+            }
+        } else {
+            let single = parseInt(part);
+            if (!isNaN(single)) allowed.add(single);
         }
-    } else if (val.includes(',')) {
-        return val.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
-    } else {
-        let single = parseInt(val);
-        if (!isNaN(single)) return [single];
     }
-    return [10, 9, 8, 7, 6, 5]; // Default fallback
+    
+    if (allowed.size === 0) return [10, 9, 8, 7, 6, 5];
+    return Array.from(allowed);
 }
 
 // Recursive backtracking to find mathematically valid grade combinations within constraints
@@ -424,7 +429,10 @@ function loadData() {
             document.getElementById('completedCredits').value = data.completedCredits || '';
             document.getElementById('targetCGPA').value = data.targetCGPA || '';
             
-            data.rows.forEach(r => addRow(r.course, r.credits, r.grade, r.expected));
+            data.rows.forEach(r => {
+                let expected = r.expected === "any" ? "" : r.expected;
+                addRow(r.course, r.credits, r.grade, expected);
+            });
             togglePredictMode();
         } catch(e) {
             initDefaultRows();
