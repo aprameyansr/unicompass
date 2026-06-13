@@ -37,15 +37,41 @@
             margin-bottom: 40px; gap: 16px; flex-wrap: wrap;
         }
         
-        .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
-        .back-arrow {
-            display: flex; align-items: center; justify-content: center;
-            width: 36px; height: 36px; border-radius: 10px;
-            background: #1b2435; color: #aab4d6; transition: 0.2s;
+/* ---------- Premium Back To Dashboard Button ---------- */
+        .uc-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #aab4d6;
+            transition: 0.2s;
+            font-size: 16px;
+            font-weight: 500;
         }
-        .logo-wrap:hover .back-arrow { background: #4f66ff; color: white; }
-        .logo-text { font-size: 30px; font-weight: 700; color: #4f66ff; }
-        .logo-text span { color: #4f66ff; } /* removed blue span for consistency with index */
+        
+        .uc-back-btn .back-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #1b2435;
+            color: #aab4d6;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 18px;
+        }
+        
+        .uc-back-btn:hover {
+            color: white;
+        }
+        
+        .uc-back-btn:hover .back-arrow {
+            background: #4f66ff;
+            color: white;
+            transform: translateX(-4px);
+            box-shadow: 0 4px 12px rgba(79, 102, 255, 0.3);
+        }
 
         .program-selector { display: flex; align-items: center; gap: 12px; }
         .program-selector label { font-size: 14px; color: #aab4d6; font-weight: 500; }
@@ -220,9 +246,9 @@
     <div class="container">
         <!-- Navbar -->
         <div class="navbar">
-            <a href="index.html" class="logo-wrap">
+            <a href="index.html" class="uc-back-btn">
                 <div class="back-arrow">&#8592;</div>
-                <div class="logo-text">Uni<span>Compass</span></div>
+                Back to Dashboard
             </a>
             <div class="program-selector">
                 <label>Program Calendar</label>
